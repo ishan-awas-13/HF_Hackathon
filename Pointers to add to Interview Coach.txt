@@ -1,0 +1,15 @@
+Pointers to add to Interview Coach model:
+
+Level 1:
+1. What project did u last work on, what was your
+role in it, Can you explain that project?
+2. What technologies did you use in that project?
+3. What was the team size?
+4. Have you ever lead a team?
+
+Level 2:
+1. What challenges did you face in your last project and how did you handle them?
+2. 
+
+
+gemma4:31b-cloud
