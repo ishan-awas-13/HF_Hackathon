@@ -9,7 +9,4 @@ role in it, Can you explain that project?
 
 Level 2:
 1. What challenges did you face in your last project and how did you handle them?
-2. 
-
-
-gemma4:31b-cloud
+2. User response history, for ease of remembering. 

@@ -1,0 +1,71 @@
+[
+  {
+    "timestamp": "2026-05-22 19:38",
+    "job_snippet": "Full Stack Developer - Swiggy\n\nAbout the role:\nSwiggy is loo...",
+    "questions": [
+      "\"Could you please describe your most recent project as a Full Stack Developer, focusing on the challenges you faced during the development process, the technologies used, and how you optimized its performance?",
+      "Can you provide more details on the specific versions or frameworks of React.js and Node.js that Swiggy's Full Stack Developer role focuses on, as well as any additional tools or libraries we might be expected to work with while building and maintaining our platform?",
+      "\"Can you describe a specific instance where you faced a challenging optimization issue in a project involving React.js and Node.js, and the approach you took to improve the application's performance?"
+    ],
+    "answers": [
+      "Testing phase input, ignore please...",
+      "Testing phase input, ignore please...",
+      "Testing phase input, ignore please..."
+    ],
+    "scores": [
+      "0/10",
+      "0/10",
+      "0/10"
+    ],
+    "numeric_scores": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "timestamp": "2026-05-22 19:54",
+    "job_snippet": "Machine Learning Engineer - Unacademy\n\nPosition: ML Engineer...",
+    "questions": [
+      "No response",
+      "What specific machine learning libraries, frameworks, or tools does Unacademy currently utilize or prefer for building its recommendation systems, and are there any particular expectations or requirements around proficiency in these technologies for this Machine Learning Engineer role?",
+      "\"Can you describe a complex challenge you faced while developing or optimizing a recommendation system in your previous role, and explain the strategies you employed to overcome that challenge?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-05-22 19:55",
+    "job_snippet": "Machine Learning Engineer - Unacademy\n\nPosition: ML Engineer...",
+    "questions": [
+      "\"Could you please describe a machine learning project you have recently worked on, specifically focusing on the recommendation system aspect?",
+      "Can you elaborate on which specific machine learning libraries, programming languages, or cloud platforms are preferred or commonly used for building and deploying the recommendation systems at Unacademy?",
+      "\"Can you describe a challenging situation you encountered while building a recommendation system in your previous role, and explain the approach you took to overcome that challenge?"
+    ],
+    "answers": [
+      "i worked on a project to train a model to learn how to make an algorithm for pre...",
+      "i worked on a project to train a model to learn how to make an algorithm for pre...",
+      "i worked on a project to train a model to learn how to make an algorithm for pre..."
+    ],
+    "scores": [
+      "7/10",
+      "7/10",
+      "7/10"
+    ],
+    "numeric_scores": [
+      7.0,
+      7.0,
+      7.0
+    ]
+  }
+]

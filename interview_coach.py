@@ -2,13 +2,33 @@ import gradio as gr
 import requests
 import json
 import datetime
+import os
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
+HISTORY_FILE = "interview_history.json"
+
+# ── Persistent History Helpers ─────────────────────────────────────────────────
+def load_history():
+    """Load history from JSON file on disk"""
+    if os.path.exists(HISTORY_FILE):
+        with open(HISTORY_FILE, "r") as f:
+            return json.load(f)
+    return []
+
+def save_history(history):
+    """Save history to JSON file on disk"""
+    with open(HISTORY_FILE, "w") as f:
+        json.dump(history, f, indent=2)
 
 # ── Ollama helper ──────────────────────────────────────────────────────────────
 def ask_ollama(prompt, model="mistral:7b", temperature=0.7):
     try:
-        payload = {"model": model, "prompt": prompt, "stream": False, "temperature": temperature}
+        payload = {
+            "model": model,
+            "prompt": prompt,
+            "stream": False,
+            "temperature": temperature
+        }
         r = requests.post(OLLAMA_URL, json=payload, timeout=300)
         return r.json().get("response", "No response")
     except Exception as e:
@@ -45,13 +65,14 @@ def generate_all_questions(job_desc, history_state):
         "questions": questions,
         "answers": ["", "", ""],
         "scores": ["", "", ""],
+        "numeric_scores": [],
     }
 
     history_state = history_state or []
     history_state.append(session)
+    save_history(history_state)  # 💾 Save to disk
 
     tips_md = build_tips(job_desc)
-
     return questions[0], "0", "Question 1 / 3", history_state, gr.update(value=tips_md)
 
 # ── Answer scoring ─────────────────────────────────────────────────────────────
@@ -80,12 +101,19 @@ Fix: (one specific improvement)"""
         last = history_state[-1]
         if idx < len(last["answers"]):
             last["answers"][idx] = answer[:80] + "..."
-            # Extract score
             for line in feedback.splitlines():
                 if line.startswith("Score:"):
-                    last["scores"][idx] = line.replace("Score:", "").strip()
+                    score_str = line.replace("Score:", "").strip()
+                    last["scores"][idx] = score_str
+                    # Extract numeric score
+                    try:
+                        numeric = float(score_str.split("/")[0].strip())
+                        last["numeric_scores"].append(numeric)
+                    except:
+                        pass
                     break
         history_state[-1] = last
+        save_history(history_state)  # 💾 Save to disk
 
     return feedback, history_state
 
@@ -99,26 +127,90 @@ def next_question(q_index_str, history_state):
     next_idx = idx + 1
 
     if next_idx >= len(questions):
-        return "✅ All 3 questions complete! Check your history below.", str(idx), "Interview Complete 🎉", history_state
+        return "✅ All 3 questions complete! Check your history.", str(idx), "Interview Complete 🎉", history_state
 
-    progress = f"Question {next_idx + 1} / 3"
-    return questions[next_idx], str(next_idx), progress, history_state
+    return questions[next_idx], str(next_idx), f"Question {next_idx + 1} / 3", history_state
 
 # ── History rendering ──────────────────────────────────────────────────────────
+def compute_stats(history):
+    """Compute overall stats across all sessions"""
+    all_scores = []
+    for s in history:
+        for score in s.get("numeric_scores", []):
+            all_scores.append(score)
+
+    if not all_scores:
+        return None
+
+    avg = sum(all_scores) / len(all_scores)
+    best = max(all_scores)
+
+    # Trend: compare first half vs second half
+    trend = ""
+    if len(all_scores) >= 4:
+        mid = len(all_scores) // 2
+        first_avg = sum(all_scores[:mid]) / mid
+        second_avg = sum(all_scores[mid:]) / (len(all_scores) - mid)
+        diff = second_avg - first_avg
+        if diff > 0.5:
+            trend = "📈 Improving!"
+        elif diff < -0.5:
+            trend = "📉 Declining — practice more"
+        else:
+            trend = "➡️ Consistent"
+
+    return {
+        "total_sessions": len(history),
+        "total_answers": len(all_scores),
+        "avg_score": round(avg, 1),
+        "best_score": round(best, 1),
+        "trend": trend
+    }
+
 def render_history(history_state):
-    if not history_state:
+    """Render full history with stats"""
+    history = history_state or []
+
+    # Load from disk too (in case state and disk diverge)
+    disk_history = load_history()
+    if len(disk_history) > len(history):
+        history = disk_history
+
+    if not history:
         return "No sessions yet. Start your first interview above!"
 
     lines = []
-    for i, s in enumerate(reversed(history_state), 1):
+
+    # Stats block
+    stats = compute_stats(history)
+    if stats:
+        lines.append("## 📊 Your Progress")
+        lines.append(f"| Metric | Value |")
+        lines.append(f"|--------|-------|")
+        lines.append(f"| Total Sessions | {stats['total_sessions']} |")
+        lines.append(f"| Total Answers | {stats['total_answers']} |")
+        lines.append(f"| Average Score | {stats['avg_score']}/10 |")
+        lines.append(f"| Best Score | {stats['best_score']}/10 |")
+        if stats['trend']:
+            lines.append(f"| Trend | {stats['trend']} |")
+        lines.append("")
+
+    # Sessions
+    lines.append("## 📝 Session History")
+    for i, s in enumerate(reversed(history), 1):
         scores_display = " | ".join(s["scores"]) if any(s["scores"]) else "No feedback yet"
-        lines.append(f"### Session {len(history_state) - i + 1} — {s['timestamp']}")
+        avg = ""
+        if s.get("numeric_scores"):
+            avg = f" · Avg: {round(sum(s['numeric_scores'])/len(s['numeric_scores']), 1)}/10"
+
+        lines.append(f"### Session {len(history) - i + 1} — {s['timestamp']}{avg}")
         lines.append(f"**Role:** {s['job_snippet']}")
         lines.append(f"**Scores:** {scores_display}")
+
         for j, (q, a, sc) in enumerate(zip(s["questions"], s["answers"], s["scores"]), 1):
             lines.append(f"\n**Q{j}:** {q}")
             if a:
-                lines.append(f"*Your answer:* {a}")
+                lines.append(f"*Answer:* {a}")
             if sc:
                 lines.append(f"*Score:* {sc}")
         lines.append("---")
@@ -211,12 +303,9 @@ def build_tips(job_desc=""):
 
 # ── Custom CSS ─────────────────────────────────────────────────────────────────
 CUSTOM_CSS = """
-/* Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
+* { font-family: 'Google Sans', 'Product Sans', sans-serif !important; }
 
-* { font-family: 'Inter', sans-serif !important; }
-
-/* Accent gradient on primary buttons */
 .gr-button-primary {
     background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
     border: none !important;
@@ -228,8 +317,6 @@ CUSTOM_CSS = """
     transform: translateY(-2px) !important;
     box-shadow: 0 6px 20px rgba(99,102,241,0.4) !important;
 }
-
-/* Secondary buttons */
 .gr-button-secondary {
     border: 2px solid #6366f1 !important;
     color: #6366f1 !important;
@@ -240,60 +327,48 @@ CUSTOM_CSS = """
     background: #6366f1 !important;
     color: white !important;
 }
-
-/* Progress badge */
 #progress_box textarea {
     font-weight: 700 !important;
     font-size: 1rem !important;
     color: #6366f1 !important;
     text-align: center !important;
 }
-
-/* Feedback box */
 #feedback_box textarea {
     font-size: 0.95rem !important;
     line-height: 1.6 !important;
 }
-
-/* Tabs */
-.tab-nav button {
-    font-weight: 600 !important;
-    font-size: 0.9rem !important;
-}
-
-/* Header */
-.app-header {
-    text-align: center;
-    padding: 1.5rem 0 0.5rem;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
+.tab-nav button { font-weight: 600 !important; }
 """
 
 # ── Build UI ───────────────────────────────────────────────────────────────────
-with gr.Blocks(title="AI Interview Coach") as demo:
+with gr.Blocks(
+    title="AI Interview Coach",
+    theme=gr.themes.Soft(
+        primary_hue=gr.themes.colors.violet,
+        secondary_hue=gr.themes.colors.purple,
+        neutral_hue=gr.themes.colors.slate,
+        font=[gr.themes.GoogleFont("Google Sans"), "ui-sans-serif", "sans-serif"],
+    ),
+    css=CUSTOM_CSS
+) as demo:
 
-    # ── State ──────────────────────────────────────────────────────────────────
-    history_state = gr.State([])
+    # Load history from disk on startup
+    history_state = gr.State(load_history())
     q_index = gr.State("0")
 
-    # ── Header ─────────────────────────────────────────────────────────────────
     gr.HTML("""
     <div style="text-align:center; padding: 1.8rem 0 0.8rem;">
         <h1 style="font-size:2.2rem; font-weight:800; margin:0;
                    background: linear-gradient(135deg,#6366f1,#a78bfa);
                    -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
-            🎤 AI Interview Coach
+            AI Interview Coach
         </h1>
         <p style="color:#64748b; margin-top:0.4rem; font-size:1rem;">
-            Powered by a local Mistral 7B model · Practice · Get Feedback · Improve
+            Powered by Mistral 7B · Practice · Get Feedback · Improve
         </p>
     </div>
     """)
 
-    # ── Tabs ───────────────────────────────────────────────────────────────────
     with gr.Tabs():
 
         # ── Tab 1: Practice ───────────────────────────────────────────────────
@@ -304,7 +379,7 @@ with gr.Blocks(title="AI Interview Coach") as demo:
                     job_desc_box = gr.Textbox(
                         label="Job Description",
                         lines=6,
-                        placeholder="Paste from LinkedIn, company careers page, etc.\nInclude role title, required skills, and responsibilities...",
+                        placeholder="Paste from LinkedIn, company careers page, etc.",
                     )
                     start_btn = gr.Button("🚀 Start Interview", variant="primary", size="lg")
 
@@ -320,12 +395,11 @@ with gr.Blocks(title="AI Interview Coach") as demo:
                         label="Interview Question",
                         lines=3,
                         interactive=False,
-                        placeholder="Your question will appear here after clicking Start...",
                     )
                     answer_box = gr.Textbox(
                         label="Your Answer",
                         lines=5,
-                        placeholder="Type your answer here. Be specific — use the STAR format (Situation, Task, Action, Result).",
+                        placeholder="Be specific — use the STAR format (Situation, Task, Action, Result).",
                     )
                     with gr.Row():
                         feedback_btn = gr.Button("📊 Get Feedback", variant="primary")
@@ -336,7 +410,6 @@ with gr.Blocks(title="AI Interview Coach") as demo:
                 label="AI Coach Feedback",
                 interactive=False,
                 lines=7,
-                placeholder="Feedback will appear here after you click 'Get Feedback'...",
                 elem_id="feedback_box",
             )
 
@@ -344,12 +417,16 @@ with gr.Blocks(title="AI Interview Coach") as demo:
         with gr.Tab("📈 History & Progress"):
             gr.Markdown("""
             ### Your Interview Sessions
-            All sessions are stored locally during this browser session.
+            History is **saved to disk** — persists across restarts! 💾
             """)
-            refresh_btn = gr.Button("🔄 Refresh History", variant="secondary")
-            history_display = gr.Markdown("No sessions yet. Start your first interview!")
+            with gr.Row():
+                refresh_btn = gr.Button("🔄 Refresh History", variant="secondary")
+                clear_btn = gr.Button("🗑️ Clear History", variant="secondary")
+            history_display = gr.Markdown(
+                render_history(load_history())  # Load from disk on startup
+            )
 
-        # ── Tab 3: Tips & Resources ───────────────────────────────────────────
+        # ── Tab 3: Tips ───────────────────────────────────────────────────────
         with gr.Tab("💡 Tips & Resources"):
             tips_display = gr.Markdown(build_tips())
 
@@ -358,12 +435,20 @@ with gr.Blocks(title="AI Interview Coach") as demo:
         fn=generate_all_questions,
         inputs=[job_desc_box, history_state],
         outputs=[question_box, q_index, progress_box, history_state, tips_display],
+    ).then(
+        fn=render_history,
+        inputs=[history_state],
+        outputs=[history_display],
     )
 
     feedback_btn.click(
         fn=score_answer,
         inputs=[answer_box, q_index, history_state],
         outputs=[feedback_box, history_state],
+    ).then(
+        fn=render_history,
+        inputs=[history_state],
+        outputs=[history_display],
     )
 
     next_btn.click(
@@ -378,24 +463,16 @@ with gr.Blocks(title="AI Interview Coach") as demo:
         outputs=[history_display],
     )
 
-    # Auto-refresh history whenever a session is updated
-    start_btn.click(
-        fn=render_history,
+    def clear_history(history_state):
+        """Clear all history"""
+        if os.path.exists(HISTORY_FILE):
+            os.remove(HISTORY_FILE)
+        return [], "History cleared! Start a new interview above."
+
+    clear_btn.click(
+        fn=clear_history,
         inputs=[history_state],
-        outputs=[history_display],
-    )
-    feedback_btn.click(
-        fn=render_history,
-        inputs=[history_state],
-        outputs=[history_display],
+        outputs=[history_state, history_display],
     )
 
-demo.launch(
-    theme=gr.themes.Soft(
-        primary_hue=gr.themes.colors.violet,
-        secondary_hue=gr.themes.colors.purple,
-        neutral_hue=gr.themes.colors.slate,
-        font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "sans-serif"],
-    ),
-    css=CUSTOM_CSS,
-)
+demo.launch()
