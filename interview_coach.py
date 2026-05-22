@@ -410,13 +410,14 @@ with gr.Blocks(
 
     gr.HTML("""
     <div style="text-align:center; padding: 1.8rem 0 0.8rem;">
-        <h1 style="font-size:2.2rem; font-weight:800; margin:0;
+        <h1 style="font-size:2.2rem; font-weight:800; margin:0; font-size: 2.2rem;
                    background: linear-gradient(135deg,#6366f1,#a78bfa);
                    -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
             AI Interview Coach
         </h1>
         <p style="color:#64748b; margin-top:0.4rem; font-size:1rem;">
-            Powered by Mistral 7B · Practice · Get Feedback · Improve
+            <b>Practice · Get Feedback · Improve</b><br>
+            <span style="font-size:0.8rem; color:#808080;">Powered by <span style="color:#f97316; font-weight:600;">Mistral 7B</span></span>
         </p>
     </div>
     """)
