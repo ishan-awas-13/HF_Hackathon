@@ -83,16 +83,26 @@ def score_answer(answer, q_index_str, history_state):
     idx = int(q_index_str) if q_index_str else 0
     answer = answer[:500]
 
-    prompt = f"""You are a strict but constructive interview coach. Rate this answer 0-10.
+    prompt = f"""You are a strict interview coach evaluating a candidate's spoken interview answer.
 
-Answer: {answer}
+Candidate's answer: {answer}
 
-Respond in this exact format:
-Relevant: YES or NO
+STEP 1 — Relevance check:
+Is this a genuine attempt at answering an interview question? 
+It is NOT relevant if it is: random text, mix of random text, code, gibberish, a single word, copy-pasted content, or completely off-topic, only partially meaningful or relevant.
+
+STEP 2 - 
+If NOT relevant, respond with ONLY these two lines and nothing else:
+Relevant: NO
+Score: NIL/10
+Warning: ⚠️ Irrelevant response detected. Please answer the interview question properly using the STAR format.
+
+If it IS a genuine interview answer, respond with ALL of the following lines and NOTHING else:
+Relevant: YES
 Score: X/10
-Strength: (one sentence)
-Weakness: (one sentence)
-Fix: (one specific improvement)"""
+Strength: (one sentence about what was done well)
+Weakness: (one sentence about the biggest gap)
+Fix: (one specific, actionable improvement the candidate can make to their spoken answer — no code)"""
 
     feedback = ask_ollama(prompt, temperature=0.5)
 
@@ -118,18 +128,60 @@ Fix: (one specific improvement)"""
     return feedback, history_state
 
 # ── Navigation ─────────────────────────────────────────────────────────────────
-def next_question(q_index_str, history_state):
+def next_question(q_index_str, answer, history_state):
+    """Move to next question, returning previous Q+A for the review panel."""
     idx = int(q_index_str) if q_index_str else 0
     if not history_state:
-        return "Start an interview first.", str(idx), "No session", history_state
+        return "Start an interview first.", "", str(idx), "No session", history_state, "", "", ""
 
-    questions = history_state[-1]["questions"]
+    session = history_state[-1]
+    questions = session["questions"]
     next_idx = idx + 1
 
-    if next_idx >= len(questions):
-        return "✅ All 3 questions complete! Check your history.", str(idx), "Interview Complete 🎉", history_state
+    # Capture what the user just answered (for the prev panel)
+    prev_q = questions[idx]
+    prev_a = answer or "(no answer given)"
+    prev_score = session["scores"][idx] if session["scores"][idx] else "(no feedback yet)"
 
-    return questions[next_idx], str(next_idx), f"Question {next_idx + 1} / 3", history_state
+    if next_idx >= len(questions):
+        session_log = render_session_log(session, up_to=idx)
+        return (
+            "✅ All 3 questions complete! Check your history.",
+            "",           # clear answer box
+            str(idx),
+            "Interview Complete 🎉",
+            history_state,
+            prev_q,
+            prev_a,
+            session_log,
+        )
+
+    session_log = render_session_log(session, up_to=idx)
+    return (
+        questions[next_idx],
+        "",            # clear answer box
+        str(next_idx),
+        f"Question {next_idx + 1} / 3",
+        history_state,
+        prev_q,
+        prev_a,
+        session_log,
+    )
+
+def render_session_log(session, up_to):
+    """Render completed Q+A+Score pairs for the current session (up to index `up_to`)."""
+    if up_to < 0:
+        return "No completed questions yet."
+    lines = []
+    for i in range(up_to + 1):
+        q = session["questions"][i]
+        a = session["answers"][i] or "(no answer saved)"
+        sc = session["scores"][i] or "(no feedback yet)"
+        lines.append(f"**Q{i+1}:** {q}")
+        lines.append(f"*Your answer:* {a}")
+        lines.append(f"*Score:* {sc}")
+        lines.append("")
+    return "\n".join(lines)
 
 # ── History rendering ──────────────────────────────────────────────────────────
 def compute_stats(history):
@@ -208,12 +260,12 @@ def render_history(history_state):
         lines.append(f"**Scores:** {scores_display}")
 
         for j, (q, a, sc) in enumerate(zip(s["questions"], s["answers"], s["scores"]), 1):
-            lines.append(f"\n**Q{j}:** {q}")
+            lines.append(f"\n### **Q{j}:** {q}\n")
             if a:
-                lines.append(f"*Answer:* {a}")
+                lines.append(f"**Answer:** {a}\n")
             if sc:
-                lines.append(f"*Score:* {sc}")
-        lines.append("---")
+                lines.append(f"**Score:** {sc}\n")
+        lines.append("\n---")
 
     return "\n".join(lines)
 
@@ -405,6 +457,26 @@ with gr.Blocks(
                         feedback_btn = gr.Button("📊 Get Feedback", variant="primary")
                         next_btn = gr.Button("➡️ Next Question", variant="secondary")
 
+            # ── Previous answer review panel ──────────────────────────────────
+            with gr.Accordion("🔁 Previous Question Review", open=False) as prev_accordion:
+                with gr.Row():
+                    prev_question_box = gr.Textbox(
+                        label="Previous Question",
+                        interactive=False,
+                        lines=2,
+                        placeholder="Will show the last question after you click Next Question...",
+                    )
+                    prev_answer_box = gr.Textbox(
+                        label="Your Previous Answer",
+                        interactive=False,
+                        lines=3,
+                        placeholder="Will show your last answer here...",
+                    )
+
+            # ── Full session log accordion ─────────────────────────────────────
+            with gr.Accordion("📋 This Session's Log", open=False):
+                session_log_display = gr.Markdown("Complete questions to see your session log here.")
+
             gr.Markdown("### 🏆 Step 3 — Coach Feedback")
             feedback_box = gr.Textbox(
                 label="AI Coach Feedback",
@@ -453,8 +525,8 @@ with gr.Blocks(
 
     next_btn.click(
         fn=next_question,
-        inputs=[q_index, history_state],
-        outputs=[question_box, q_index, progress_box, history_state],
+        inputs=[q_index, answer_box, history_state],
+        outputs=[question_box, answer_box, q_index, progress_box, history_state, prev_question_box, prev_answer_box, session_log_display],
     )
 
     refresh_btn.click(

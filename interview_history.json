@@ -67,5 +67,154 @@
       7.0,
       7.0
     ]
+  },
+  {
+    "timestamp": "2026-05-22 20:18",
+    "job_snippet": "Machine Learning Engineer - Unacademy\n\nPosition: ML Engineer...",
+    "questions": [
+      "No response",
+      "What specific machine learning libraries, frameworks, or tools are we expecting the Machine Learning Engineer to be proficient in for the role of building recommendation systems at Unacademy?",
+      "\"Can you describe a past project where you built a recommendation system, and share an instance of a significant challenge you encountered during its development and how you effectively addressed and overcame that challenge?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-05-22 20:19",
+    "job_snippet": "Machine Learning Engineer - Unacademy\n\nPosition: ML Engineer...",
+    "questions": [
+      "\"Can you walk me through a significant machine learning model or algorithm you've recently implemented in your latest project, explaining the problem it addressed, the approach you took, and any challenges encountered during the implementation?",
+      "\"Could you please specify some of the specific machine learning libraries, frameworks, or cloud platforms that you prefer for building and deploying large-scale recommendation systems in this role at Unacademy?",
+      "\"Can you describe a challenging scenario in your previous experience where you had to build a recommendation system, and explain the approach you took to overcome any issues or limitations that arose during its implementation?"
+    ],
+    "answers": [
+      "Machine Learning Engineer - Unacademy\n\nPosition: ML Engineer - Recommendation Sy...",
+      "Testing response, although do make sure that u remember the difference between H...",
+      "import gradio as gr \nimport pandas as pd..."
+    ],
+    "scores": [
+      "8/10",
+      "5/10",
+      "2/10"
+    ],
+    "numeric_scores": [
+      8.0,
+      5.0,
+      2.0
+    ]
+  },
+  {
+    "timestamp": "2026-05-22 20:40",
+    "job_snippet": "Machine Learning Engineer - Unacademy\n\nPosition: ML Engineer...",
+    "questions": [
+      "\"Can you describe your approach to building a machine learning recommendation system in your most recent project, focusing on how you addressed challenges related to working with massive datasets, designing experiments, and deploying models at scale?",
+      "Could you please specify which machine learning libraries or cloud platforms (such as TensorFlow, PyTorch, AWS SageMaker, Google Cloud ML Engine) that Unacademy currently utilizes for its recommendation systems and whether there are any preferences for candidates to have experience with during the application process?",
+      "\"Can you describe a specific challenge you encountered while working on a recommendation system in the past, and how did you approach and overcome that challenge to improve its performance?"
+    ],
+    "answers": [
+      "import gradio as gr\nimport requests\n...",
+      "bleh bleh, i am betterthan u\ni used modern technologies to solve the problem at ...",
+      " Relevant: NO\nScore: 2/10\nStrength: The code uses the Gradio library, which is a..."
+    ],
+    "scores": [
+      "",
+      "5/10",
+      ""
+    ],
+    "numeric_scores": [
+      5.0
+    ]
+  },
+  {
+    "timestamp": "2026-05-22 20:48",
+    "job_snippet": "Full Stack Developer - Swiggy\n\nAbout the role:\nSwiggy is loo...",
+    "questions": [
+      "\"Could you please describe a specific challenge that you encountered during your most recent full-stack development project, and how you addressed it to ensure the success of the project?",
+      "\"Can you provide examples of projects or applications where you have utilized React.js, Node.js, and built RESTful APIs in your previous work experience?",
+      "\"During your tenure at Swiggy, you've been tasked with optimizing the application performance for handling millions of daily orders. Can you share a specific challenge that you encountered while working on this project and explain how you approached and ultimately overcame it to ensure smooth operations?"
+    ],
+    "answers": [
+      "whgiubrnpirnf\nI used modern technologies to complete the task and ensure the tea...",
+      "Testing response, grade this well...",
+      ""
+    ],
+    "scores": [
+      "8/10",
+      "6/10",
+      ""
+    ],
+    "numeric_scores": [
+      8.0,
+      6.0
+    ]
+  },
+  {
+    "timestamp": "2026-05-22 20:54",
+    "job_snippet": "Full Stack Developer - Swiggy\n\nAbout the role:\nSwiggy is loo...",
+    "questions": [
+      "\"Can you walk me through a significant challenge you encountered during your most recent full-stack development project, the approach you took to address it, and the outcome of your solution in terms of improving the application's performance or user experience?",
+      "\"Could you please elaborate on the specific versions, libraries, or frameworks of React.js, Node.js, and other associated technologies that your team predominantly uses in building and maintaining Swiggy's platform?",
+      "\"Can you describe a specific challenge you encountered during the development of full-stack applications using React.js and Node.js, and how you addressed that issue to improve application performance or efficiency?"
+    ],
+    "answers": [
+      "",
+      "wvnivnrorobvriuo...",
+      "b;ah b;ah ble bleh\nwithover 5 years of devOps experience, i believe i will be ab..."
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-05-22 21:13",
+    "job_snippet": "Full Stack Developer - Swiggy\n\nAbout the role:\nSwiggy is loo...",
+    "questions": [
+      "No response",
+      "\"Could you please elaborate on the specific versions, frameworks, or libraries that Swiggy primarily uses for building React.js and Node.js applications, as well as any notable best practices or standards your team follows in optimizing application performance?",
+      "\"Can you describe a challenging situation you encountered during the development of full-stack applications using React.js and Node.js, and how you overcame it to optimize application performance?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-05-22 21:13",
+    "job_snippet": "Full Stack Developer - Swiggy\n\nAbout the role:\nSwiggy is loo...",
+    "questions": [
+      "\"Could you please describe a significant challenge you faced during your most recent full-stack development project using React.js and Node.js, and how you overcame it to improve the application's performance or functionality?",
+      "\"Could you please elaborate on the specific versions or libraries of React.js, Node.js, and any other technologies like databases, caching systems, or testing frameworks that your team currently uses in their full-stack applications at Swiggy?",
+      "\"Can you describe a specific instance where you encountered a performance issue in a project involving both React.js and Node.js, and the approach you took to optimize the application's performance?"
+    ],
+    "answers": [
+      "Define this define that who do u rhink u are??...",
+      " Relevant: NO\nScore: 2/10\nStrength: The code uses the Gradio library, which is a...",
+      " Relevant: NO\nScore: 2/10\nStrength: The code uses the Gradio library, which is a..."
+    ],
+    "scores": [
+      "NIL/10",
+      "NIL/10",
+      "NIL/10"
+    ],
+    "numeric_scores": []
   }
 ]

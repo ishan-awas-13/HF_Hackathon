@@ -10,3 +10,9 @@ role in it, Can you explain that project?
 Level 2:
 1. What challenges did you face in your last project and how did you handle them?
 2. User response history, for ease of remembering. 
+
+
+ISSUESS TO ADDRESS:
+1. the 3rd Q in history is bold and large for some weird reason
+2. The model got weirdly affected by the input "import gradio as gr and import pandas as pd", and spat out a hallucinated hybrid response.
+3. make the history flow and viewing consistent, either store all in localStorage or use JSON, dont keep the mix of both
