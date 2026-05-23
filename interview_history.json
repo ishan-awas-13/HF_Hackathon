@@ -216,5 +216,65 @@
       "NIL/10"
     ],
     "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-05-23 16:23",
+    "job_snippet": "testing connection with mistral, active or not?\n...",
+    "questions": [
+      "\u274c Error: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='localhost', port=11434): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it\"))",
+      "What specific tools or methodologies does your company use for connecting and testing the Mistral system, either when it is active or inactive?",
+      "\"Can you describe a particularly challenging experience you had while testing the connection with Mistral, whether it was active or inactive, and explain the steps you took to overcome that obstacle?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-05-23 16:25",
+    "job_snippet": "testing connection with mistral, active or not?\n...",
+    "questions": [
+      "\"Could you please describe a project in your most recent work where you were involved in testing a connection with Mistral, whether it was active or not?",
+      "\"Could you please elaborate on the specific tools or techniques you use for testing connections with Mistral?",
+      "\"Can you share an example of a challenging situation you encountered while testing connections with Mistral, and describe the steps you took to diagnose and resolve the issue?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-05-23 21:20",
+    "job_snippet": "hey testibng input is connection established or nha>\n...",
+    "questions": [
+      "No response",
+      "\"Could you please elaborate on the specific technologies or tools that you have experience with, and how they are utilized in your approach to establishing a secure network connection?",
+      "\"During your previous experience in network administration, can you describe a challenging situation where you encountered connectivity issues and the steps you took to troubleshoot and resolve the problem?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
   }
 ]

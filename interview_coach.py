@@ -390,6 +390,17 @@ CUSTOM_CSS = """
     line-height: 1.6 !important;
 }
 .tab-nav button { font-weight: 600 !important; }
+
+/* ── Animated blob background ── */
+body {
+    background: #0d0d1f !important;
+}
+gradio-app {
+    background: transparent !important;
+}
+.gradio-container {
+    background: transparent !important;
+}
 """
 
 # ── Build UI ───────────────────────────────────────────────────────────────────
@@ -420,6 +431,56 @@ with gr.Blocks(
             <span style="font-size:0.8rem; color:#808080;">Powered by <span style="color:#f97316; font-weight:600;">Mistral 7B</span></span>
         </p>
     </div>
+    """)
+
+    gr.HTML("""
+        <style>
+            @keyframes floatBlob1 {
+                0%   { transform: translate(0px,   0px);  }
+                33%  { transform: translate(-30px, -40px); }
+                66%  { transform: translate(40px,  -20px); }
+                100% { transform: translate(0px,   0px);  }
+            }
+            @keyframes floatBlob2 {
+                0%   { transform: translate(0px,  0px);  }
+                33%  { transform: translate(50px, 30px);  }
+                66%  { transform: translate(-30px, 50px); }
+                100% { transform: translate(0px,  0px);  }
+            }
+            @keyframes floatBlob3 {
+                0%   { transform: translate(0px,   0px);  }
+                33%  { transform: translate(-40px, 50px); }
+                66%  { transform: translate(30px, -40px); }
+                100% { transform: translate(0px,   0px);  }
+            }
+        </style>
+
+        <div style="
+            position: fixed; width: 400px; height: 300px;
+            border-radius: 50%; background: #6366f1;
+            filter: blur(80px); opacity: 0.35;
+            top: -100px; left: -100px;
+            z-index: 0; pointer-events: none;
+            animation: floatBlob1 20s ease-in-out infinite;
+        "></div>
+
+        <div style="
+            position: fixed; width: 500px; height: 400px;
+            border-radius: 50%; background: #8b5cf6;
+            filter: blur(100px); opacity: 0.25;
+            top: 50%; right: -200px;
+            z-index: 0; pointer-events: none;
+            animation: floatBlob2 25s ease-in-out infinite;
+        "></div>
+
+        <div style="
+            position: fixed; width: 600px; height: 350px;
+            border-radius: 50%; background: #f97316;
+            filter: blur(90px); opacity: 0.2;
+            bottom: -100px; left: 100px;
+            z-index: 0; pointer-events: none;
+            animation: floatBlob3 15s ease-in-out infinite;
+        "></div>
     """)
 
     with gr.Tabs():
