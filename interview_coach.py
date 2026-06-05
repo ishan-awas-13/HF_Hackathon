@@ -19,6 +19,15 @@ with gr.Blocks(
     history_state = gr.State(load_history())
     q_index = gr.State("0")
 
+    # Agenda 1, 2, 4, 5 System Profile Memory State
+    job_profile_state = gr.State({
+        "valid": False,
+        "industry": "General",
+        "keywords": [],
+        "tips": "No tips generated yet."
+    })
+
+    
     gr.HTML("""
     <div style="text-align:center; padding: 1.8rem 0 0.8rem;">
         <h1 style="font-size:2.2rem; font-weight:800; margin:0; font-size: 2.2rem;

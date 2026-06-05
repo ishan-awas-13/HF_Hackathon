@@ -296,3 +296,62 @@ def build_tips(job_desc=""):
 - [Tech Interview Handbook](https://www.techinterviewhandbook.org/)
 - [Pramp — Free Mock Interviews](https://www.pramp.com/)
 """
+
+
+#main and new function for job description validation and analysis
+def analyze_and_validate_job(job_desc, model="mistral:7b"):
+    """
+    Executes a comprehensive structural analysis on the raw job description text.
+    Validates completeness, auto-detects industry domain, extracts expected scoring keywords, 
+    and dynamically designs real-time interview preparation tips.
+    """
+    if not job_desc or len(job_desc.strip()) < 30:
+        return {"valid": False, "error_msg": "Please enter a complete Job Description (minimum 30 characters)."}
+
+    # Strict token-bounded system prompt optimized for Mistral 7B formatting constraints
+    analysis_prompt = f"""[INST] You are an expert automated recruitment evaluator. Analyze the technical and operational completeness of the following job description text.
+
+    Job Description Text:
+    {job_desc}
+
+    You MUST encapsulate your findings strictly inside the following layout block tags. Do not output any conversational introductions, conclusions, or meta-commentary outside of these tags.
+
+    <VALIDATION>
+    Analyze if this text contains explicit job requirements, core responsibilities, or necessary candidate skills. If it does, reply with exactly 'COMPLETE'. If it is brief, uninformative, generic, missing concrete criteria, or looks like gibberish, reply with exactly 'INVALID'.
+    </VALIDATION>
+
+    <INDUSTRY>
+    Specify the precise job sector or professional field (e.g., Frontend Web Development, Mechanical Engineering, Healthcare Management, B2B Sales).
+    </INDUSTRY>
+
+    <KEYWORDS>
+    Identify exactly 3 to 5 critical domain terms, frameworks, tools, or functional methodologies expected to appear in a high-performing candidate's answer for this role. Provide them as a simple, comma-separated plain text list.
+    </KEYWORDS>
+
+    <TIPS>
+    Generate 3 highly contextual, bulleted technical or strategic interview preparation tips explicitly customized to the demands of this position.
+    </TIPS>
+    [/INST]"""
+
+    raw_response = ask_ollama(analysis_prompt, model=model, temperature=0.2)
+    
+    # Internal text slicing function to extract data safely between target tags
+    def extract_tag_content(text, tag_name):
+        start_tag = f"<{tag_name}>"
+        end_tag = f"</{tag_name}>"
+        if start_tag in text and end_tag in text:
+            return text.split(start_tag)[1].split(end_tag)[0].strip()
+        return ""
+
+    validation_result = extract_tag_content(raw_response, "VALIDATION").upper()
+    
+    # Agenda 1 Check: Verify if the description text meets systemic validation baselines
+    if "INVALID" in validation_result or not extract_tag_content(raw_response, "KEYWORDS"):
+        return {"valid": False, "error_msg": "Please enter a complete Job Description"}
+
+    return {
+        "valid": True,
+        "industry": extract_tag_content(raw_response, "INDUSTRY"),
+        "keywords": [k.strip() for k in extract_tag_content(raw_response, "KEYWORDS").split(",") if k.strip()],
+        "tips": extract_tag_content(raw_response, "TIPS")
+    }
