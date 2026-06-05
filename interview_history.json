@@ -378,5 +378,45 @@
     "numeric_scores": [
       9.0
     ]
+  },
+  {
+    "timestamp": "2026-06-05 19:34",
+    "job_snippet": "Test input rrgrggrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgr...",
+    "questions": [
+      "\"Could you please describe your role and contributions in the most recent project you worked on, detailing any challenges encountered and how you overcame them?",
+      "\"Could you please elaborate on the specific programming languages, tools, or frameworks you are most experienced with when it comes to handling and testing input strings similar to 'rrgrggrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrgrg', as described in this job posting?",
+      "\"During your previous role, you were tasked with handling data sets as complex as the one provided in the job description. Can you share an example of a particularly challenging data set you encountered and explain how you identified the problem, devised a solution, and successfully implemented it to improve data processing efficiency or accuracy?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-06 00:22",
+    "job_snippet": "hiii how are you?? Im eager to spoeak to you today...",
+    "questions": [
+      "\"Can you please describe your most recent project, its objectives, the role you played within it, and any significant accomplishments or challenges you faced during its execution?",
+      "\"Could you please elaborate on the specific technologies or tools mentioned in the job description that you have experience with, and provide examples of projects where you've utilized them?",
+      "\"Can you describe a significant challenge you've encountered in your previous role and explain how you strategized, implemented solutions, and measured the outcomes of your actions to overcome that challenge?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
   }
 ]
