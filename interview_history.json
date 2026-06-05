@@ -276,5 +276,107 @@
       ""
     ],
     "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-04 21:14",
+    "job_snippet": "testing the input active or not from ollama...",
+    "questions": [
+      "No response",
+      "What specific programming languages, testing frameworks, or automated testing tools will be utilized to test the input activity from Ollama?",
+      "\"Can you describe a specific challenge you encountered while testing the input active/not status from an Ollama, and explain how you managed to overcome it?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-04 21:16",
+    "job_snippet": "testing the input active or not from ollama...",
+    "questions": [
+      "\"Could you please describe a recent project where you were responsible for testing input functionality, and explain how you ensured that the inputs from 'ollama' were active or not?",
+      "What specific programming languages, testing frameworks, or automation tools will be utilized to test the input activity from Ollama?",
+      "\"Can you describe a specific challenge you encountered while testing the input activity from Ollama, and explain how you successfully addressed and overcame that challenge?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-04 21:33",
+    "job_snippet": "Job BriefWe are seeking a detail-oriented Quality Assurance ...",
+    "questions": [
+      "\"Can you walk me through your role in a recent project where you were responsible for quality assurance testing?",
+      "What specific automated testing tools are currently being utilized in your team for software quality assurance, and could you elaborate on the extent to which they are incorporated into the testing process?",
+      "\"Can you describe a complex software issue you encountered during your previous role as a QA Tester, and explain the steps you took to identify, isolate, document, and ultimately resolve the problem?"
+    ],
+    "answers": [
+      "blah blah befogorgrg...",
+      "",
+      ""
+    ],
+    "scores": [
+      "NIL/10",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-04 21:35",
+    "job_snippet": "Job BriefWe are seeking a detail-oriented Quality Assurance ...",
+    "questions": [
+      "\"Can you describe a challenging situation that arose during your most recent quality assurance project, and how you identified, isolated, and documented the issue as part of your defect tracking process?",
+      "Can you please specify which particular automated testing frameworks and software development life cycle (SDLC) methodologies your organization currently uses for its quality assurance processes?",
+      "\"Can you describe a challenging situation you encountered while developing or executing a test plan, and how you overcame that challenge to ensure the software met the desired quality standards?"
+    ],
+    "answers": [
+      "im osrry i have no idea waht im doing...",
+      "......I am the smartest here, i will ensure u kneel before me...",
+      "RUN RUN AWAY. I ensure the team was kept in mind during development. To ace the ..."
+    ],
+    "scores": [
+      "NIL/10",
+      "NIL/10",
+      "NIL/10"
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-05 00:14",
+    "job_snippet": "3. Creative Role: UI/UX Design Intern\nCompany: PixelPerfect ...",
+    "questions": [
+      "\"Could you please walk me through your most recent UI/UX project, discussing the user research and competitive analysis stages, the challenges faced during wireframing, and how the final high-fidelity design was achieved?",
+      "What specific UI/UX design software or tools does PixelPerfect Studio prefer for its intern UI/UX Designers to be proficient in during this remote internship?",
+      "\"Can you describe a specific challenge you've encountered during the UI/UX design process in your previous projects, and explain how you effectively addressed and overcame that challenge to ensure an optimal user experience?"
+    ],
+    "answers": [
+      " I guided my team to success with all my heart and soul. Situation:\n\"While devel...",
+      "",
+      ""
+    ],
+    "scores": [
+      "9/10",
+      "",
+      ""
+    ],
+    "numeric_scores": [
+      9.0
+    ]
   }
 ]

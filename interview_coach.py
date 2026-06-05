@@ -609,4 +609,4 @@ with gr.Blocks(
         outputs=[history_state, history_display],
     )
 
-demo.launch()
+demo.launch(share = True)
