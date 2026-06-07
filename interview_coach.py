@@ -192,8 +192,8 @@ with gr.Blocks(
     # ── Wire up events ─────────────────────────────────────────────────────────
     start_btn.click(
         fn=generate_all_questions,
-        inputs=[job_desc_box, history_state],
-        outputs=[question_box, q_index, progress_box, history_state, tips_display],
+        inputs=[job_desc_box, history_state, job_profile_state],
+        outputs=[question_box, q_index, progress_box, history_state, tips_display, job_profile_state],
     ).then(
         fn=render_history,
         inputs=[history_state],

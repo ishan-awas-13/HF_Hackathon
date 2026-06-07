@@ -1,9 +1,12 @@
+#NOTE: This file is for the mainfunctions that run thebackend and the input/job desc processing
+
 import gradio as gr
 import requests
 import json
 import datetime
 import os
 from config import *
+
 
 # ── Persistent History Helpers ─────────────────────────────────────────────────
 def load_history():
@@ -39,10 +42,26 @@ def clean_question(raw):
         raw = raw.split("?")[0] + "?"
     return raw.strip()
 
-def generate_all_questions(job_desc, history_state):
-    if not job_desc or len(job_desc.strip()) < 20:
-        return "Please paste a job description (20+ characters).", "", "Ready", history_state, gr.update()
+def generate_all_questions(job_desc, history_state, job_profile_state):
+    # 1. Run validation pipeline
+    validation_res = analyze_and_validate_job(job_desc)
+    
+    # 2. Check if valid
+    if not validation_res.get("valid"):
+        gr.Warning(validation_res.get("error_msg", "Please enter a complete Job Description"))
+        return (
+            "Please enter a complete Job Description.", 
+            "0", 
+            "Ready", 
+            history_state, 
+            gr.update(), 
+            job_profile_state
+        )
 
+    # 3. Save profile
+    job_profile_state = validation_res
+
+    # 4. Generate questions
     job_desc = job_desc[:500]
     questions = []
     for p in QUESTION_PROMPTS:
@@ -63,8 +82,16 @@ def generate_all_questions(job_desc, history_state):
     history_state.append(session)
     save_history(history_state)  # 💾 Save to disk
 
-    tips_md = build_tips(job_desc)
-    return questions[0], "0", "Question 1 / 3", history_state, gr.update(value=tips_md)
+    # Format dynamic tips from the validated profile
+    industry = job_profile_state.get("industry", "General")
+    keywords = job_profile_state.get("keywords", [])
+    tips = job_profile_state.get("tips", "")
+    
+    tips_md = f"## 🎯 Tips for: {industry}\n\n### 💡 Preparation Tips\n{tips}\n\n### 🔑 Expected Keywords\n"
+    for k in keywords:
+        tips_md += f"- ✅ {k}\n"
+
+    return questions[0], "0", "Question 1 / 3", history_state, gr.update(value=tips_md), job_profile_state
 
 # ── Answer scoring ─────────────────────────────────────────────────────────────
 def score_answer(answer, q_index_str, history_state):
@@ -298,15 +325,15 @@ def build_tips(job_desc=""):
 """
 
 
-#main and new function for job description validation and analysis
+#new function for job description validation and analysis
 def analyze_and_validate_job(job_desc, model="mistral:7b"):
     """
     Executes a comprehensive structural analysis on the raw job description text.
     Validates completeness, auto-detects industry domain, extracts expected scoring keywords, 
     and dynamically designs real-time interview preparation tips.
     """
-    if not job_desc or len(job_desc.strip()) < 30:
-        return {"valid": False, "error_msg": "Please enter a complete Job Description (minimum 30 characters)."}
+    if not job_desc or len(job_desc.strip()) < 300:
+        return {"valid": False, "error_msg": "Please enter a complete Job Description (minimum 300 characters)."}
 
     # Strict token-bounded system prompt optimized for Mistral 7B formatting constraints
     analysis_prompt = f"""[INST] You are an expert automated recruitment evaluator. Analyze the technical and operational completeness of the following job description text.
