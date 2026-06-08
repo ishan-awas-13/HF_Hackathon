@@ -538,5 +538,89 @@
       ""
     ],
     "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-08 02:18",
+    "job_snippet": "Hey we arrHey we are hiring a manager for our shop in downto...",
+    "questions": [
+      "\"Can you describe your most recent project experience as a manager and explain how your cool demeanor, punctuality, and positive attitude contributed to its success?",
+      "\"Could you please describe the specific technologies or tools that are commonly used in managing your shop and how familiarity with them will contribute to success in this role?",
+      "\"Can you describe a situation where you had to handle a challenging scenario as a team leader or manager, and explain how your cool demeanor, punctuality, and positive attitude contributed to finding a solution and maintaining a productive work environment?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-08 02:23",
+    "job_snippet": "Hey we arrHey we are hiring a manager for our shop in downto...",
+    "questions": [
+      "\"Can you please describe your most recent project experience, including the role you played, challenges encountered, and how you overcame those challenges?",
+      "\"Can you please share some examples of specific management tools or technologies you have experience with that you believe could enhance efficiency and productivity within our shop?",
+      "\"Can you share an example of a time when you faced a challenging situation at your previous job, and describe the steps you took to resolve it?"
+    ],
+    "answers": [
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-08 12:06",
+    "job_snippet": "Position: Legal Tech Implementation Specialist\nCompany: LexD...",
+    "questions": [
+      "\"Could you please describe your most recent project where you bridged the gap between legal and technology, focusing on the challenges you faced, the solutions you implemented, and the outcomes achieved?",
+      "\"Could you please elaborate on the specific technologies or tools that the Legal Tech Implementation Specialist would be expected to have proficiency in, particularly for automating legal text documents and using digital discovery databases?",
+      "\"Can you describe a specific challenge you've encountered while bridging the gap between legal teams and software engineering, and how you successfully navigated this situation to achieve a favorable outcome?"
+    ],
+    "answers": [
+      "SITUATION:\ni am the best\nTASK:\nI am here to conquer the world\nACTION:\ni  conquer...",
+      "SITUATION:\ni am the best\nTASK:\nI am here to conquer the world\nACTION:\ni  conquer...",
+      "SITUATION:\ni am the best\nTASK:\nI am here to conquer the world\nACTION:\ni  conquer..."
+    ],
+    "scores": [
+      "NIL/10",
+      "NIL/10",
+      "NIL/10"
+    ],
+    "numeric_scores": []
+  },
+  {
+    "timestamp": "2026-06-08 12:29",
+    "job_snippet": "Plaintext\nJob Title: Lead Head Chef & Kitchen Operations Man...",
+    "questions": [
+      "\"Could you please describe your most recent project as a Head Chef, detailing how you managed the culinary team, designed seasonal menus while maintaining food cost metrics and margins, and enforced food safety regulations?",
+      "In the context of managing kitchen supply chains, inventory auditing, and ingredient sourcing, what specific technologies or tools are currently being utilized at Bella Italia Bistro for these tasks, and how do you envision further enhancing their usage in your role as Lead Head Chef & Kitchen Operations Manager?",
+      "\"Can you describe a time when you had to balance creating a seasonal menu while maintaining strict food cost metrics and margins?"
+    ],
+    "answers": [
+      "Situation: \"In my most recent role as Head Chef at [Insert Restaurant Name], I n...",
+      "Situation: Bella Italia currently relies on [mention their tool, e.g., Toast POS...",
+      "\"Last summer, I had to completely pivot the menu to a farm-to-table approach. Th..."
+    ],
+    "scores": [
+      "9/10",
+      "9/10",
+      "8/10"
+    ],
+    "numeric_scores": [
+      9.0,
+      9.0,
+      8.0
+    ]
   }
 ]
