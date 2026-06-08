@@ -4,16 +4,7 @@ from config import *
 from engine import *
 
 # ── Build UI ───────────────────────────────────────────────────────────────────
-with gr.Blocks(
-    title="AI Interview Coach",
-    theme=gr.themes.Soft(
-        primary_hue=gr.themes.colors.violet,
-        secondary_hue=gr.themes.colors.purple,
-        neutral_hue=gr.themes.colors.slate,
-        font=[gr.themes.GoogleFont("Google Sans"), "ui-sans-serif", "sans-serif"],
-    ),
-    css=CUSTOM_CSS
-) as demo:
+with gr.Blocks(title="AI Interview Coach") as demo:
 
     # Load history from disk on startup
     history_state = gr.State(load_history())
@@ -173,14 +164,20 @@ with gr.Blocks(
             )
 
         # ── Tab 2: History ────────────────────────────────────────────────────
-        with gr.Tab("📈 History & Progress"):
+        with gr.Tab("📈 History & PDF Report"):
             gr.Markdown("""
-            ### Your Interview Sessions
-            History is **saved to disk** — persists across restarts! 💾
+            ### 📄 Download Interview Session Report
+            Generate a professionally formatted PDF containing your complete interview history, answers, AI feedback, and coaching recommendations.
             """)
             with gr.Row():
-                refresh_btn = gr.Button("🔄 Refresh History", variant="secondary")
+                download_report_btn = gr.Button("📥 Generate PDF Report", variant="primary")
+                refresh_btn = gr.Button("🔄 Refresh Preview", variant="secondary")
                 clear_btn = gr.Button("🗑️ Clear History", variant="secondary")
+            
+            report_file_output = gr.File(label="Your PDF Report", interactive=False)
+            
+            gr.Markdown("---")
+            gr.Markdown("### 📝 Quick Progress History")
             history_display = gr.Markdown(
                 render_history(load_history())  # Load from disk on startup
             )
@@ -216,6 +213,12 @@ with gr.Blocks(
         outputs=[question_box, answer_box, q_index, progress_box, history_state, prev_question_box, prev_answer_box, session_log_display],
     )
 
+    download_report_btn.click(
+        fn=generate_pdf_report,
+        inputs=[history_state],
+        outputs=[report_file_output]
+    )
+
     refresh_btn.click(
         fn=render_history,
         inputs=[history_state],
@@ -234,4 +237,11 @@ with gr.Blocks(
         outputs=[history_state, history_display],
     )
 
-demo.launch()
+custom_theme = gr.themes.Soft(
+    primary_hue=gr.themes.colors.violet,
+    secondary_hue=gr.themes.colors.purple,
+    neutral_hue=gr.themes.colors.slate,
+    font=[gr.themes.GoogleFont("Google Sans"), "ui-sans-serif", "sans-serif"],
+)
+
+demo.launch(theme=custom_theme, css=CUSTOM_CSS)

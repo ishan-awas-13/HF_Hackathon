@@ -7,14 +7,29 @@ import datetime
 import os
 from config import *
 
-
+#NOTE: The followng imports are for implementing
+#           PDF report generation of the intervirew session
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.lib.colors import HexColor
+from reportlab.lib.units import inch
+from reportlab.lib import colors
+#END of imports for PDF report generation
 
 # ── Persistent History Helpers ─────────────────────────────────────────────────
 def load_history():
     """Load history from JSON file on disk"""
     if os.path.exists(HISTORY_FILE):
-        with open(HISTORY_FILE, "r") as f:
-            return json.load(f)
+        try:
+            with open(HISTORY_FILE, "r") as f:
+                content = f.read().strip()
+                if not content:
+                    return []
+                return json.loads(content)
+        except json.JSONDecodeError:
+            return []
     return []
 
 def save_history(history):
@@ -79,8 +94,7 @@ def generate_all_questions(job_desc, history_state, job_profile_state):
         "numeric_scores": [],
     }
 
-    history_state = history_state or []
-    history_state.append(session)
+    history_state = [session]
     save_history(history_state)  # 💾 Save to disk
 
     # Format dynamic tips from the validated profile
@@ -402,3 +416,216 @@ Extract the primary industry domain, 3 candidate keywords, and 3 interview prep 
         "tips": extract_tag_content(raw_response, "TIPS")
     }
 
+## PDF Report of session generation fucntion implemented here──────────────────────────────────────────────────────────
+def generate_pdf_report(history_state):
+    """
+    Compiles the current interview session data from history_state 
+    into a structured, professionally styled PDF report using ReportLab.
+    Returns the file path string of the generated PDF.
+    """
+    filename = "Interview_Session_Report.pdf"
+
+    # Final safety check for the entire history_state object before generating the report
+    if not history_state or len(history_state) == 0:
+        # Create a dummy report file to return something valid
+        doc = SimpleDocTemplate(filename, pagesize=letter)
+        styles = getSampleStyleSheet()
+        story = [Paragraph("No interview data available to generate a report.", styles['Heading2'])]
+        doc.build(story)
+        return filename
+
+    # Create the PDF document with letter page size
+    doc = SimpleDocTemplate(filename, pagesize=letter)
+    styles = getSampleStyleSheet()
+    story = []  # This will hold all the elements to be written to the PDF
+    
+    # ── Define custom paragraph styles for professional styling ──────────────────
+    
+    # Main title style
+    title_style = ParagraphStyle(
+        'Title',
+        parent=styles['Heading1'],
+        alignment=TA_CENTER,
+        fontSize=24,
+        spaceAfter=36,
+        textColor=HexColor('#0f172a'),  # Dark grey/blue for title
+        fontName='Helvetica-Bold',
+    )
+    
+    # Section header style
+    section_header_style = ParagraphStyle(
+        'SectionHeader',
+        parent=styles['Heading2'],
+        alignment=TA_LEFT,
+        fontSize=16,
+        spaceBefore=20,
+        spaceAfter=12,
+        textColor=HexColor('#334155'),  # Muted blue-grey for headers
+        fontName='Helvetica-Bold',
+    )
+    
+    # Sub-section header style
+    sub_section_header_style = ParagraphStyle(
+        'SubSectionHeader',
+        parent=styles['Heading3'],
+        alignment=TA_LEFT,
+        fontSize=12,
+        spaceBefore=14,
+        spaceAfter=6,
+        textColor=HexColor('#334155'),
+        fontName='Helvetica-Bold',
+    )
+    
+    # Body text style
+    body_text_style = ParagraphStyle(
+        'BodyText',
+        parent=styles['BodyText'],
+        alignment=TA_LEFT,
+        fontSize=10,
+        spaceBefore=4,
+        spaceAfter=4,
+        textColor=HexColor('#475569'),  # Muted grey for readability
+        leading=14,  # Line spacing for better readability
+    )
+    
+    # Score badge style
+    score_badge_style = ParagraphStyle(
+        'ScoreBadge',
+        parent=styles['BodyText'],
+        alignment=TA_CENTER,
+        fontSize=12,
+        spaceBefore=6,
+        spaceAfter=6,
+        textColor=HexColor('#ffffff'),  # White text for badges
+        fontName='Helvetica-Bold',
+    )
+    
+    # ── Create the main title ──────────────────────────────────────────────────
+    title = Paragraph("Technical Interview Session Report", title_style)
+    story.append(title)
+    story.append(Spacer(1, 0.2 * inch))  # Add space after title
+    
+    # Create a horizontal separator line
+    separator = Paragraph('<hr/>', ParagraphStyle('Separator', spaceBefore=0, spaceAfter=0))
+    story.append(separator)
+    story.append(Spacer(1, 0.2 * inch))  # Add space after separator
+    
+    # ── Process each interview session in reverse chronological order (newest first) ──────────────────────────────
+    session_count = 1
+    for session in reversed(history_state):
+        # Report title
+        report_title = Paragraph(f"Session #{len(history_state) - session_count + 1}", section_header_style)
+        story.append(report_title)
+        
+        # Session metadata
+        metadata_style = ParagraphStyle(
+            'Metadata',
+            parent=body_text_style,
+            fontSize=10,
+            textColor=HexColor('#64748b'),  # Muted grey for metadata
+        )
+        
+        # Create metadata table for clean alignment
+        metadata_data = [
+            [Paragraph("<strong>Date:</strong>", metadata_style), Paragraph(session.get("timestamp", "N/A"), metadata_style)],
+            [Paragraph("<strong>Job Snippet:</strong>", metadata_style), Paragraph(session.get("job_snippet", "N/A"), metadata_style)],
+        ]
+        metadata_table = Table(metadata_data, colWidths=[1.5 * inch, 5 * inch])
+        
+        # Table styling
+        metadata_table.setStyle(TableStyle([
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 0),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+            ('BOTTOMPADDING', (0, -1), (-1, -1), 12),  # Extra padding below last row
+        ]))
+        
+        story.append(metadata_table)
+        
+        # Questions section
+        questions_header = Paragraph("Questions & Answers", section_header_style)
+        story.append(questions_header)
+        story.append(Spacer(1, 0.1 * inch))
+        
+        # Get questions and answers in the correct order
+        questions = session.get("questions", [])
+        answers = session.get("answers", [])
+        scores = session.get("scores", [])
+        numeric_scores = session.get("numeric_scores", [])
+        
+        # Create an overall score badge for the session
+        if numeric_scores:
+            avg_score = sum(numeric_scores) / len(numeric_scores)
+            # Define color based on score
+            if avg_score >= 8:
+                badge_color = "#10b981"  # Green for high scores
+            elif avg_score >= 5:
+                badge_color = "#f59e0b"  # Orange for medium scores
+            else:
+                badge_color = "#ef4444"  # Red for low scores
+            
+            avg_score_badge = Paragraph(
+                f"Overall Score: {avg_score:.1f}/10",
+                ParagraphStyle(
+                    'AvgScoreBadge',
+                    parent=score_badge_style,
+                    fontSize=12,
+                    bgColor=HexColor(badge_color),
+                    spaceBefore=8,
+                    spaceAfter=12,
+                    textColor=HexColor('#ffffff'),  # White text for badges
+                )
+            )
+            story.append(avg_score_badge)
+        
+        # Process each question and answer
+        for i, (q, a, s) in enumerate(zip(questions, answers, scores), start=1):
+            # Question header
+            q_header = Paragraph(f"Question {i}: {q}", sub_section_header_style)
+            story.append(q_header)
+            
+            # Answer and score display
+            answer_content = a if a.strip() else "(No answer provided)"
+            score_content = s if s.strip() else "(No feedback generated)"
+            answer_and_score = Paragraph(
+                f"<strong>Your Answer:</strong> {answer_content}<br/>"
+                f"<strong>AI Score:</strong> {score_content}",
+                body_text_style
+            )
+            story.append(answer_and_score)
+            
+            # Add separator after each question-answer pair
+            if i < len(questions):
+                question_separator = Paragraph('<hr/>', ParagraphStyle('QuestionSeparator', spaceBefore=4, spaceAfter=4))
+                story.append(question_separator)
+        
+        # Session summary and recommendations
+        story.append(Spacer(1, 0.2 * inch))
+        summary_header = Paragraph("Summary & Recommendations", section_header_style)
+        story.append(summary_header)
+        
+        if numeric_scores:
+            avg_score = sum(numeric_scores) / len(numeric_scores)
+            if avg_score >= 8:
+                recommendation = "Excellent performance! The candidate demonstrated strong technical knowledge and clear structured answers. Keep maintaining this level of depth and confidence."
+            elif avg_score >= 5:
+                recommendation = "Good effort. The candidate showed solid understanding but needs to focus on addressing weaknesses, incorporating missing key terms, and structuring responses using the STAR format."
+            else:
+                recommendation = "Practice needed. The candidate should focus on expanding their answers, incorporating industry-specific keywords, and structuring their responses more effectively."
+            
+            story.append(Paragraph(recommendation, body_text_style))
+        else:
+            story.append(Paragraph("Complete more questions in the session to see overall progress and coaching recommendations.", body_text_style))
+        
+        # Add a page break if there are more sessions
+        if session_count < len(history_state):
+            story.append(PageBreak())
+            
+        session_count += 1
+        
+    doc.build(story)
+    return filename
+        
