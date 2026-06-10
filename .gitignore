@@ -15,3 +15,15 @@ __pycache__/
 # Ignore OS files
 .DS_Store
 Thumbs.db
+
+# ── Project-specific ──────────────────────────────────────────────────────────
+# .env holds your REAL HF_TOKEN — never commit it
+# .env.example (the template with fake values) IS safe to commit
+.env
+
+# Generated PDF reports are runtime artifacts, not source code
+Interview_Report_*.pdf
+Interview_Session_Report.pdf
+
+# Session history is runtime state
+interview_history.json

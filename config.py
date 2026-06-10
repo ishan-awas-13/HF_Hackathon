@@ -1,12 +1,35 @@
+# ── LLM Backend ──────────────────────────────────────────────────────────────
+# Currently configured for LOCAL development using Ollama (mistral:7b).
+# Before HF Spaces deployment: swap this block for the HF InferenceClient
+# block that is saved in .env.example / README.md.
 OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_MODEL = "mistral:7b"
+
+# ── Persistence ──────────────────────────────────────────────────────────────
+# Session is runtime-only. History JSON is written per-session and read for PDF.
 HISTORY_FILE = "interview_history.json"
 
-QUESTION_PROMPTS = [
-    "Generate ONE interview question about the candidate's most recent project experience. Question:",
-    "Generate ONE follow-up interview question about the specific technologies or tools used. Question:",
-    "Generate ONE interview question about a challenge they faced and how they overcame it. Question:",
+# ── Interview Modes ───────────────────────────────────────────────────────────
+INTERVIEW_MODES = {
+    "⚡ Quick (3 Questions)": 3,
+    "📋 Standard (5 Questions)": 5,
+    "🔬 Deep Dive (7 Questions)": 7,
+}
+
+# ── Question Prompt Templates ─────────────────────────────────────────────────
+# These are injected into the QuestionGenAgent with the job profile context.
+# The agent fills in {industry}, {role_level}, {keywords} dynamically.
+QUESTION_PROMPT_TEMPLATES = [
+    "Generate ONE interview question asking the candidate to describe their most relevant project experience for a {role_level} {industry} role. Focus on: {keywords}. Question:",
+    "Generate ONE behavioral interview question about how the candidate handles challenges, relevant to {industry}. Question:",
+    "Generate ONE technical or domain-specific question that tests knowledge of {keywords} in a {industry} context. Question:",
+    "Generate ONE question asking the candidate about their approach to collaboration, communication, or leadership relevant to a {role_level} role. Question:",
+    "Generate ONE situational interview question: 'What would you do if...' relevant to {industry} and {keywords}. Question:",
+    "Generate ONE question about the candidate's long-term career goals and how this {industry} role aligns with them. Question:",
+    "Generate ONE challenging follow-up question that digs deeper into technical expertise or past achievements relevant to {keywords}. Question:",
 ]
 
+# ── Default Tips (fallback only — AI-generated tips take priority) ─────────────
 TIPS_DB = {
     "python": {
         "label": "Python / Backend",
@@ -44,7 +67,7 @@ TIPS_DB = {
 }
 
 DEFAULT_TIPS = {
-    "label": "General Software Engineering",
+    "label": "General / Professional",
     "leetcode": [
         ("Two Sum", "https://leetcode.com/problems/two-sum/", "Easy"),
         ("Merge Intervals", "https://leetcode.com/problems/merge-intervals/", "Medium"),
@@ -53,51 +76,180 @@ DEFAULT_TIPS = {
     "concepts": ["STAR answer format", "System design basics", "Time & space complexity", "Behavioural questions"],
 }
 
+# ── CSS Design System ─────────────────────────────────────────────────────────
 CUSTOM_CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
-* { font-family: 'Google Sans', 'Product Sans', sans-serif !important; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-.gr-button-primary {
+/* ── Reset & Base ── */
+* { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif !important; box-sizing: border-box; }
+
+/* ── Root color tokens ── */
+:root {
+    --indigo:    #6366f1;
+    --violet:    #8b5cf6;
+    --indigo-glow: rgba(99,102,241,0.35);
+    --violet-glow: rgba(139,92,246,0.25);
+    --surface:   rgba(15,15,35,0.6);
+    --border:    rgba(99,102,241,0.18);
+    --text-muted: #94a3b8;
+    --text-dim:   #64748b;
+}
+
+/* ── Background ── */
+body { background: #080818 !important; }
+gradio-app { background: transparent !important; }
+.gradio-container { background: transparent !important; max-width: 1280px !important; margin: 0 auto !important; }
+
+/* ── Glass panels ── */
+.gr-panel, .gr-box, .svelte-panel, .block, .form {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    backdrop-filter: blur(12px) !important;
+    border-radius: 14px !important;
+}
+
+/* ── Tab nav ── */
+.tab-nav { border-bottom: 1px solid var(--border) !important; }
+.tab-nav button {
+    font-weight: 600 !important;
+    color: var(--text-muted) !important;
+    padding: 0.6rem 1.2rem !important;
+    border-radius: 8px 8px 0 0 !important;
+    transition: all 0.2s !important;
+}
+.tab-nav button.selected {
+    color: var(--indigo) !important;
+    border-bottom: 2px solid var(--indigo) !important;
+    background: rgba(99,102,241,0.08) !important;
+}
+
+/* ── Primary buttons ── */
+.gr-button-primary, button[variant="primary"], .primary-btn {
     background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
     border: none !important;
     color: white !important;
     font-weight: 600 !important;
-    transition: transform 0.15s, box-shadow 0.15s !important;
+    font-size: 0.9rem !important;
+    padding: 0.6rem 1.4rem !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    box-shadow: 0 0 0 rgba(99,102,241,0) !important;
 }
-.gr-button-primary:hover {
+.gr-button-primary:hover, button[variant="primary"]:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(99,102,241,0.4) !important;
+    box-shadow: 0 8px 24px rgba(99,102,241,0.45) !important;
 }
-.gr-button-secondary {
-    border: 2px solid #6366f1 !important;
-    color: #6366f1 !important;
+.gr-button-primary:active, button[variant="primary"]:active {
+    transform: translateY(0px) !important;
+}
+
+/* ── Secondary buttons ── */
+.gr-button-secondary, button[variant="secondary"] {
+    border: 1.5px solid var(--indigo) !important;
+    color: var(--indigo) !important;
     font-weight: 600 !important;
+    border-radius: 10px !important;
+    background: transparent !important;
     transition: all 0.15s !important;
 }
-.gr-button-secondary:hover {
-    background: #6366f1 !important;
+.gr-button-secondary:hover, button[variant="secondary"]:hover {
+    background: var(--indigo) !important;
     color: white !important;
 }
+
+/* ── Textbox inputs ── */
+.gr-textbox textarea, input[type="text"], textarea {
+    background: rgba(8,8,28,0.7) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    color: #e2e8f0 !important;
+    font-size: 0.92rem !important;
+    padding: 0.65rem 0.9rem !important;
+    transition: border-color 0.2s !important;
+}
+.gr-textbox textarea:focus, textarea:focus {
+    border-color: var(--indigo) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15) !important;
+}
+
+/* ── Labels ── */
+label span, .gr-textbox label { color: #cbd5e1 !important; font-weight: 500 !important; font-size: 0.85rem !important; }
+
+/* ── Progress box ── */
 #progress_box textarea {
     font-weight: 700 !important;
     font-size: 1rem !important;
-    color: #6366f1 !important;
+    color: var(--indigo) !important;
     text-align: center !important;
+    background: rgba(99,102,241,0.08) !important;
+    border-color: var(--indigo) !important;
 }
-#feedback_box textarea {
-    font-size: 0.95rem !important;
-    line-height: 1.6 !important;
-}
-.tab-nav button { font-weight: 600 !important; }
 
-/* ── Animated blob background ── */
-body {
-    background: #0d0d1f !important;
+/* ── Feedback box ── */
+#feedback_box textarea {
+    font-size: 0.93rem !important;
+    line-height: 1.65 !important;
+    color: #cbd5e1 !important;
 }
-gradio-app {
-    background: transparent !important;
+
+/* ── Markdown text ── */
+.gr-markdown, .prose {
+    color: #cbd5e1 !important;
 }
-.gradio-container {
-    background: transparent !important;
+.gr-markdown h1, .gr-markdown h2, .gr-markdown h3 {
+    color: #e2e8f0 !important;
 }
+.gr-markdown code { 
+    background: rgba(99,102,241,0.15) !important; 
+    color: #a5b4fc !important; 
+    border-radius: 4px !important; 
+    padding: 2px 6px !important;
+}
+.gr-markdown table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+.gr-markdown th {
+    background: rgba(99,102,241,0.15) !important;
+    color: #a5b4fc !important;
+    padding: 8px 12px !important;
+    font-weight: 600 !important;
+}
+.gr-markdown td {
+    border: 1px solid var(--border) !important;
+    padding: 7px 12px !important;
+    color: #cbd5e1 !important;
+}
+
+/* ── Accordion ── */
+.gr-accordion summary {
+    color: #a5b4fc !important;
+    font-weight: 600 !important;
+}
+
+/* ── Radio group (mode selector) ── */
+.gr-radio-group label {
+    background: rgba(99,102,241,0.06) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    cursor: pointer !important;
+    transition: all 0.15s !important;
+    color: #94a3b8 !important;
+}
+.gr-radio-group label:has(input:checked) {
+    background: rgba(99,102,241,0.2) !important;
+    border-color: var(--indigo) !important;
+    color: #a5b4fc !important;
+}
+
+/* ── File upload ── */
+.gr-file { border: 1px dashed var(--border) !important; border-radius: 10px !important; }
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--indigo); border-radius: 3px; }
 """

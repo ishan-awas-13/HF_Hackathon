@@ -1,1 +1,87 @@
-[]
+[
+  {
+    "timestamp": "2026-06-11 01:34",
+    "job_snippet": "Job brief\nWe are seeking an experienced Senior Tax and Accounting Specialist to ...",
+    "industry": "Finance",
+    "role_level": "Senior",
+    "mode": "\u26a1 Quick (3 Questions)",
+    "questions": [
+      "Could you please describe a significant project in your career where you were responsible for managing tax compliance, accounting, transfer pricing, and maintaining GAAP/IFRS standards?",
+      "Describe a complex financial situation that you faced during your previous role, and walk me through the steps you took to overcome the challenge, focusing on your problem-solving approach, collaboration with stakeholders, and ensuring compliance while minimizing risks.",
+      "Can you explain how you would approach documenting transfer pricing adjustments for an intercompany sale in accordance with both GAAP and IFRS standards, while ensuring compliance with local tax regulations?"
+    ],
+    "answers": [
+      "HAHA IM TOO GOOD FOR U",
+      "I love this world, fi challenge, focusing on your problem-solving approach, collaboration with stake...",
+      "SKIBIDI BOP MM DADADA"
+    ],
+    "scores": [
+      "NIL/10",
+      "4/10",
+      "NIL/10"
+    ],
+    "numeric_scores": [
+      4.0
+    ],
+    "score_results": [
+      {
+        "raw_feedback": " Relevant: NO\nScore: NIL/10\nWarning: \u26a0\ufe0f Irrelevant response detected. Please answer the interview question properly.",
+        "score_str": "NIL/10",
+        "numeric_score": null,
+        "hit_keywords": [],
+        "missed_keywords": [
+          "Tax",
+          "Accounting",
+          "Transfer Pricing",
+          "Compliance",
+          "GAAP",
+          "IFRS",
+          "English Communication",
+          "Teamwork",
+          "Independence"
+        ],
+        "coverage_pct": 0.0,
+        "star_hint": true
+      },
+      {
+        "raw_feedback": " Relevant: YES\nScore: 4/10\nStrength: The candidate provided a clear description of a complex financial situation they faced.\nWeakness: The answer lacked specific details about problem-solving approach, collaboration with stakeholders, and ensuring compliance while minimizing risks. It also missed several expected industry keywords such as Tax, Accounting, Transfer Pricing, GAAP, IFRS, English Communication, Teamwork, Independence.\nFix: The candidate should provide more detailed examples of their problem-solving process, collaboration with stakeholders, and compliance measures taken. They should also integrate relevant keywords into their answer to improve keyword coverage.",
+        "score_str": "4/10",
+        "numeric_score": 4.0,
+        "hit_keywords": [
+          "Compliance"
+        ],
+        "missed_keywords": [
+          "Tax",
+          "Accounting",
+          "Transfer Pricing",
+          "GAAP",
+          "IFRS",
+          "English Communication",
+          "Teamwork",
+          "Independence"
+        ],
+        "coverage_pct": 11.1,
+        "star_hint": false
+      },
+      {
+        "raw_feedback": " Relevant: NO\nScore: NIL/10\nWarning: \u26a0\ufe0f Irrelevant response detected. Please answer the interview question properly.",
+        "score_str": "NIL/10",
+        "numeric_score": null,
+        "hit_keywords": [],
+        "missed_keywords": [
+          "Tax",
+          "Accounting",
+          "Transfer Pricing",
+          "Compliance",
+          "GAAP",
+          "IFRS",
+          "English Communication",
+          "Teamwork",
+          "Independence"
+        ],
+        "coverage_pct": 0.0,
+        "star_hint": true
+      }
+    ]
+  }
+]
