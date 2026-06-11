@@ -373,9 +373,63 @@ footer svg, .built-with svg {
     stroke: var(--text-dim) !important;
 }
 
-/*-----------Styling for step-1-group gr.Group() object.-----------*/
+/* Remove default borders and backgrounds from columns, rows, and forms to prevent nested double borders */
+.gradio-container .vertical,
+.gradio-container .row,
+.gradio-container .gr-form {
+    background: transparent !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
 
-/* Style the outer group container to look like a single clean panel */
+/* Style all step group containers as unified glass panels */
+#step-1-group, #step-2-group, #step-3-group, #step-4-group {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    backdrop-filter: blur(12px) !important;
+    border-radius: 14px !important;
+    padding: 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important;
+}
 
+/* Remove borders, backgrounds, shadows, and extra padding from all nested elements inside the groups to eliminate double-bordering */
+#step-1-group div, #step-1-group label,
+#step-2-group div,
+#step-3-group div, #step-3-group label,
+#step-4-group div, #step-4-group label {
+    background: transparent !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+}
+
+/* Format the inner textareas (Step 1, Step 3, Step 4) to be clean, integrated, and borderless */
+#step-1-group textarea,
+#step-3-group textarea,
+#step-4-group textarea {
+    background: rgba(8, 8, 28, 0.7) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    box-shadow: none !important;
+}
+
+#step-1-group textarea:focus,
+#step-3-group textarea:focus,
+#step-4-group textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Style adjustments for inner radio options in Step 2 */
+#step-2-group .gr-input-label {
+    border-color: rgba(99, 102, 241, 0.15) !important;
+}
 
 """

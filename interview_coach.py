@@ -200,27 +200,30 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
 
                 # ── LEFT COLUMN: Job Input + Mode ─────────────────────────────
                 with gr.Column(scale=1, min_width=360):
-                    gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
-                    Step 1: <br>
-                    <b>📋 Paste the Job Description</b> </p>''')
+                    with gr.Group(elem_id="step-1-group"):
+                        gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+                        Step 1: <br>
+                        <b>📋 Paste the Job Description</b> </p>''')
+        
+                        job_desc_box = gr.Textbox(
+                            label="Job Description",
+                            show_label=False,
+                            lines=9,
+                            placeholder="Paste from LinkedIn, a company's careers page, etc.\n\nTip: A longer, more detailed JD = better tailored questions.",
+                        )
+
+                    with gr.Group(elem_id="step-2-group"):
+                        gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0px 0 6px;">
+                        Step 2 <br>
+                        <b>🎚️ Choose Interview Depth</b> </p>''')
     
-
-                    job_desc_box = gr.Textbox(
-                        label="Job Description",
-                        lines=9,
-                        placeholder="Paste from LinkedIn, a company's careers page, etc.\n\nTip: A longer, more detailed JD = better tailored questions.",
-                    )
-
-                    gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0px 0 6px;">
-                    Step 2 <br>
-                    <b>🎚️ Choose Interview Depth</b> </p>''')
-
-                    mode_selector = gr.Radio(
-                        choices=list(INTERVIEW_MODES.keys()),
-                        value="⚡ Quick (3 Questions)",
-                        label="Interview Mode",
-                        info="How many questions do you want to answer?",
-                    )
+                        mode_selector = gr.Radio(
+                            choices=list(INTERVIEW_MODES.keys()),
+                            value="⚡ Quick (3 Questions)",
+                            label="Interview Mode",
+                            show_label=False,
+                            info="How many questions do you want to answer?",
+                        )
                 
                     start_btn = gr.Button(
                         "🚀 Start Interview", variant="primary", size="lg",
@@ -242,47 +245,50 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
 
                 # ── RIGHT COLUMN: Q&A ─────────────────────────────────────────
                 with gr.Column(scale=1, min_width=400):
-                    gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
-                    Step 3: <br>
-                    <b>💬 Answer the Questions</b> </p>''')
-
-                    progress_bar_display = gr.HTML('<div style="display:none"></div>')
-
-                    question_box = gr.Textbox(
-                        label="Interview Question",
-                        lines=3,
-                        interactive=False,
-                        placeholder="Your question will appear here after you click Start Interview...",
-                    )
-
-                    answer_box = gr.Textbox(
-                        label="Your Answer",
-                        lines=5,
-                        placeholder=(
-                            "Answer in complete sentences.\n\n"
-                            "💡 STAR Format: Situation → Task → Action → Result"
-                        ),
-                    )
-
-                    with gr.Row():
-                        feedback_btn = gr.Button("📊 Get Feedback", variant="primary")
-                        next_btn     = gr.Button("➡️ Next Question", variant="secondary")
+                    with gr.Group(elem_id="step-3-group"):
+                        gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+                        Step 3: <br>
+                        <b>💬 Answer the Questions</b> </p>''')
+    
+                        progress_bar_display = gr.HTML('<div style="display:none"></div>')
+    
+                        question_box = gr.Textbox(
+                            label="Interview Question",
+                            lines=3,
+                            interactive=False,
+                            placeholder="Your question will appear here after you click Start Interview...",
+                        )
+    
+                        answer_box = gr.Textbox(
+                            label="Your Answer",
+                            lines=5,
+                            placeholder=(
+                                "Answer in complete sentences.\n\n"
+                                "💡 STAR Format: Situation → Task → Action → Result"
+                            ),
+                        )
+    
+                        with gr.Row():
+                            feedback_btn = gr.Button("📊 Get Feedback", variant="primary")
+                            next_btn     = gr.Button("➡️ Next Question", variant="secondary")
 
             # ── Keyword Coverage Badge Area ───────────────────────────────────
             keyword_badges_display = gr.HTML('<div style="display:none"></div>')
 
             # ── Feedback ──────────────────────────────────────────────────────
 
-            gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
-            Step 4: <br>
-            <b>📋 Get feedback</b> </p>''')
-            feedback_box = gr.Textbox(
-                label="AI Coach Feedback",
-                interactive=False,
-                lines=8,
-                elem_id="feedback_box",
-                placeholder="Feedback will appear here after you click Get Feedback...",
-            )
+            with gr.Group(elem_id="step-4-group"):
+                gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+                Step 4: <br>
+                <b>📋 Get feedback</b> </p>''')
+                feedback_box = gr.Textbox(
+                    label="AI Coach Feedback",
+                    show_label=False,
+                    interactive=False,
+                    lines=8,
+                    elem_id="feedback_box",
+                    placeholder="Feedback will appear here after you click Get Feedback...",
+                )
 
             # ── Review Panels ─────────────────────────────────────────────────
             with gr.Accordion("🔁 Previous Question Review", open=False):
