@@ -71,7 +71,6 @@ _HEADER_HTML = """
     </p>
     <p style="color:#64748b; margin:0.3rem 0 0; font-size:0.82rem;">
         Powered by <span style="color:#f97316; font-weight:700;">Mistral 7B</span>
-        via <span style="color:#a78bfa; font-weight:600;">HuggingFace Inference API</span>
     </p>
 </div>
 """
@@ -174,7 +173,7 @@ Use this structure for behavioral and situational answers:
 """
 
 # ── Build UI ────────────────────────────────────────────────────────────────── 
-with gr.Blocks(title="AI Interview Coach") as demo:
+with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
 
     # ── Shared State ──────────────────────────────────────────────────────────
     history_state     = gr.State(load_history())
@@ -242,15 +241,7 @@ with gr.Blocks(title="AI Interview Coach") as demo:
                     gr.HTML('<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Step 3</p>')
                     gr.Markdown("### 💬 Answer Questions")
 
-                    progress_bar_display = gr.HTML("")
-
-                    progress_box = gr.Textbox(
-                        label="Progress",
-                        value="Ready to start",
-                        interactive=False,
-                        elem_id="progress_box",
-                        visible=False,  # Hidden — replaced by progress_bar_display
-                    )
+                    progress_bar_display = gr.HTML('<div style="display:none"></div>')
 
                     question_box = gr.Textbox(
                         label="Interview Question",
@@ -273,7 +264,7 @@ with gr.Blocks(title="AI Interview Coach") as demo:
                         next_btn     = gr.Button("➡️ Next Question", variant="secondary")
 
             # ── Keyword Coverage Badge Area ───────────────────────────────────
-            keyword_badges_display = gr.HTML("", label="Keyword Coverage")
+            keyword_badges_display = gr.HTML('<div style="display:none"></div>')
 
             # ── Feedback ──────────────────────────────────────────────────────
             gr.HTML('<div style="margin-top:8px;"><p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Step 4</p></div>')
@@ -354,18 +345,19 @@ with gr.Blocks(title="AI Interview Coach") as demo:
         """Wrapper: calls engine, then updates progress bar HTML."""
         result = generate_all_questions(job_desc, mode_label, history_state, job_profile_state)
         # result = (question, "0", progress_str, history_state, tips_md, job_profile, score_result)
-        first_q, idx_str, prog_str, new_hist, tips_md, new_profile, new_score_res = result
+        first_q, idx_str, _prog_str, new_hist, tips_md, new_profile, new_score_res = result
 
         n = INTERVIEW_MODES.get(mode_label, 3)
-        prog_html = _progress_bar_html(1, n) if "Please" not in first_q else ""
+        prog_html = _progress_bar_html(1, n) if "Please" not in first_q else '<div style="display:none"></div>'
+        empty_html = '<div style="display:none"></div>'
 
-        return first_q, idx_str, prog_str, new_hist, tips_md, new_profile, new_score_res, n, prog_html, ""
+        return first_q, idx_str, new_hist, tips_md, new_profile, new_score_res, n, prog_html, empty_html
 
     start_btn.click(
         fn=_handle_start,
         inputs=[job_desc_box, mode_selector, history_state, job_profile_state],
         outputs=[
-            question_box, q_index, progress_box, history_state,
+            question_box, q_index, history_state,
             tips_display, job_profile_state, score_result_state,
             n_questions_state, progress_bar_display, keyword_badges_display,
         ],
@@ -402,13 +394,14 @@ with gr.Blocks(title="AI Interview Coach") as demo:
         new_q, new_a, new_idx, prog_str, new_hist, prev_q, prev_a, log = result
         idx = int(new_idx) if new_idx else 0
         prog_html = _progress_bar_html(idx + 1, n_total) if "Complete" not in prog_str else _progress_bar_html(n_total, n_total)
-        return new_q, new_a, new_idx, prog_str, new_hist, prev_q, prev_a, log, prog_html, ""
+        empty_html = '<div style="display:none"></div>'  # collapse badge area between questions
+        return new_q, new_a, new_idx, new_hist, prev_q, prev_a, log, prog_html, empty_html
 
     next_btn.click(
         fn=_handle_next,
         inputs=[q_index, answer_box, history_state, n_questions_state],
         outputs=[
-            question_box, answer_box, q_index, progress_box, history_state,
+            question_box, answer_box, q_index, history_state,
             prev_question_box, prev_answer_box, session_log_display,
             progress_bar_display, keyword_badges_display,
         ],
@@ -427,8 +420,8 @@ with gr.Blocks(title="AI Interview Coach") as demo:
     )
 
     def clear_history_fn(history_state):
-        if os.path.exists("interview_history.json"):
-            os.remove("interview_history.json")
+        with open("interview_history.json", "w") as f:
+            f.write("[]")
         return [], "Session cleared! Start a new interview above."
 
     clear_btn.click(

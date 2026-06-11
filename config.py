@@ -83,8 +83,12 @@ CUSTOM_CSS = """
 /* ── Reset & Base ── */
 * { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif !important; box-sizing: border-box; }
 
-/* ── Root color tokens ── */
+/* ── Root color tokens (our design system) ── */
+/* ── ALSO overrides Gradio's internal CSS variables so the loading overlay  ── */
+/* ── stays dark. The white box during processing comes from                 ── */
+/* ── var(--block-background-fill) defaulting to white in the Soft theme.   ── */
 :root {
+    /* Our tokens */
     --indigo:    #6366f1;
     --violet:    #8b5cf6;
     --indigo-glow: rgba(99,102,241,0.35);
@@ -93,12 +97,25 @@ CUSTOM_CSS = """
     --border:    rgba(99,102,241,0.18);
     --text-muted: #94a3b8;
     --text-dim:   #64748b;
+
+    /* Gradio's internal variables — override to prevent white loading overlay */
+    --block-background-fill:     rgba(8,8,28,0.85);
+    --input-background-fill:     rgba(8,8,28,0.85);
+    --background-fill-primary:   #080818;
+    --background-fill-secondary: rgba(15,15,35,0.7);
+    --body-background-fill:      #080818;
+    --border-color-primary:      rgba(99,102,241,0.18);
+    --body-text-color:           #e2e8f0;
+    --body-text-color-subdued:   #94a3b8;
+    --loader-color:              #6366f1;
+    --block-border-color:        rgba(99,102,241,0.18);
+    --input-border-color:        rgba(99,102,241,0.18);
 }
 
 /* ── Background ── */
 body { background: #080818 !important; }
 gradio-app { background: transparent !important; }
-.gradio-container { background: transparent !important; max-width: 1280px !important; margin: 0 auto !important; }
+.gradio-container { background: transparent !important; width: 100% !important; max-width: none !important; margin: 0 auto !important; padding: 0 20px !important; }
 
 /* ── Glass panels ── */
 .gr-panel, .gr-box, .svelte-panel, .block, .form {
@@ -158,7 +175,7 @@ gradio-app { background: transparent !important; }
     color: white !important;
 }
 
-/* ── Textbox inputs ── */
+/* ── Textbox inputs — idle & focus ── */
 .gr-textbox textarea, input[type="text"], textarea {
     background: rgba(8,8,28,0.7) !important;
     border: 1px solid var(--border) !important;
@@ -172,6 +189,48 @@ gradio-app { background: transparent !important; }
     border-color: var(--indigo) !important;
     outline: none !important;
     box-shadow: 0 0 0 3px rgba(99,102,241,0.15) !important;
+}
+
+/* ── Textbox inputs — Gradio loading/processing states ── */
+/* Gradio adds .generating / .pending to the .wrap container during LLM calls.
+   Without these, the dark textarea flips to white during processing. */
+
+/* Target the wrapper container in every loading state */
+.wrap.generating, .wrap.pending, .wrap.processing,
+.generating .wrap, .pending .wrap, .processing .wrap {
+    background: rgba(8,8,28,0.7) !important;
+    border-color: var(--indigo) !important;
+}
+
+/* Target the textarea itself inside any loading-state wrapper */
+.generating textarea, .pending textarea, .processing textarea,
+.wrap.generating textarea, .wrap.pending textarea, .wrap.processing textarea,
+textarea.generating, textarea.pending {
+    background: rgba(8,8,28,0.7) !important;
+    color: #e2e8f0 !important;
+}
+
+/* The loading overlay div Gradio injects on top of the textarea */
+.generating .eta-bar, .generating .progress-bar,
+.pending .eta-bar, .pending .progress-bar {
+    background: rgba(99,102,241,0.12) !important;
+}
+
+/* The small "processing | X.Xs" status text Gradio adds */
+.wrap .eta-bar, .eta-bar {
+    color: var(--text-muted) !important;
+    font-size: 0.78rem !important;
+    background: transparent !important;
+}
+
+/* The loading spinner icon — keep it indigo, not default grey */
+.loader, .generating .loader {
+    border-top-color: var(--indigo) !important;
+}
+
+/* Gradio 4/5/6 Svelte-generated loading shimmer overlay */
+.generating::after, .pending::after {
+    background: rgba(8,8,28,0.4) !important;
 }
 
 /* ── Labels ── */
@@ -252,4 +311,33 @@ label span, .gr-textbox label { color: #cbd5e1 !important; font-weight: 500 !imp
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--indigo); border-radius: 3px; }
+
+/* ── Fix for White File Download Row ── */
+.gr-file .file-preview, 
+.gr-file .file-preview-holder,
+.gr-file .file-preview-wrap,
+.gr-file tbody tr,
+.gr-file table td,
+.gr-file .download-link {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: #e2e8f0 !important;
+}
+
+/* Add a subtle hover effect for the file row */
+.gr-file tbody tr:hover {
+    background-color: rgba(99,102,241,0.1) !important;
+}
+
+/* Ensure the file name text and size information are readable */
+.gr-file tbody td {
+    color: #cbd5e1 !important;
+    border-color: rgba(99,102,241,0.18) !important;
+}
+
+/* Color the download icon to match your purple theme */
+.gr-file svg {
+    stroke: #8b5cf6 !important;
+}
+
 """
