@@ -171,16 +171,8 @@ Use this structure for behavioral and situational answers:
 *Built for the HuggingFace Hackathon 2026 · Model: mistralai/Mistral-7B-Instruct-v0.3 (7B params)*
 """
 
-# ── Theme ─────────────────────────────────────────────────────────────────────
-custom_theme = gr.themes.Soft(
-    primary_hue=gr.themes.colors.purple,
-    secondary_hue=gr.themes.colors.red,
-    neutral_hue=gr.themes.colors.slate,
-    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "sans-serif"],
-)
-
 # ── Build UI ────────────────────────────────────────────────────────────────── 
-with gr.Blocks(title="AI Interview Coach", fill_width=True, theme=custom_theme, css=CUSTOM_CSS) as demo:
+with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
 
     # ── Shared State ──────────────────────────────────────────────────────────
     history_state     = gr.State(load_history())
@@ -281,7 +273,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True, theme=custom_theme, 
                             next_btn     = gr.Button("➡️ Next Question", variant="secondary")
 
             # ── Keyword Coverage Badge Area ───────────────────────────────────
-            keyword_badges_display = gr.HTML('<div style="display:none"></div>')
+            keyword_badges_display = gr.HTML('<div class="badge-container">Keyword Coverage Badges</div>')
 
             # ── Feedback ──────────────────────────────────────────────────────
 
@@ -450,4 +442,11 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True, theme=custom_theme, 
     )
 
 # ── Launch ────────────────────────────────────────────────────────────────────
-demo.launch()
+custom_theme = gr.themes.Soft(
+    primary_hue=gr.themes.colors.purple,
+    secondary_hue=gr.themes.colors.red,
+    neutral_hue=gr.themes.colors.slate,
+    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "sans-serif"],
+)
+
+demo.launch(theme=custom_theme, css=CUSTOM_CSS)
