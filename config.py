@@ -388,13 +388,13 @@ footer svg, .built-with svg {
 #step-1-group, #step-2-group, #step-3-group, #step-4-group {
     background: var(--surface) !important;
     border: 1px solid var(--border) !important;
-    backdrop-filter: blur(12px) !important;
-    border-radius: 14px !important;
-    padding: 18px !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 15px !important;
+    padding: 2px !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 14px !important;
-    margin-bottom: 20px !important;
+    gap: 1px !important;
+    margin-bottom: 5px !important;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important;
 }
 
@@ -414,9 +414,9 @@ footer svg, .built-with svg {
 #step-3-group textarea,
 #step-4-group textarea {
     background: rgba(8, 8, 28, 0.7) !important;
-    border: none !important;
+    border: 2px solid rgba(99, 102, 241, 0.35) !important;
     border-radius: 8px !important;
-    padding: 12px !important;
+    padding: 10px !important;
     box-shadow: none !important;
 }
 

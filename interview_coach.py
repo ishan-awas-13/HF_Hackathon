@@ -171,8 +171,16 @@ Use this structure for behavioral and situational answers:
 *Built for the HuggingFace Hackathon 2026 · Model: mistralai/Mistral-7B-Instruct-v0.3 (7B params)*
 """
 
+# ── Theme ─────────────────────────────────────────────────────────────────────
+custom_theme = gr.themes.Soft(
+    primary_hue=gr.themes.colors.purple,
+    secondary_hue=gr.themes.colors.red,
+    neutral_hue=gr.themes.colors.slate,
+    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "sans-serif"],
+)
+
 # ── Build UI ────────────────────────────────────────────────────────────────── 
-with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
+with gr.Blocks(title="AI Interview Coach", fill_width=True, theme=custom_theme, css=CUSTOM_CSS) as demo:
 
     # ── Shared State ──────────────────────────────────────────────────────────
     history_state     = gr.State(load_history())
@@ -311,7 +319,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
         with gr.Tab("📈 History & Report"):
             gr.HTML("""
             <div style="padding:8px 0 16px;">
-                <h3 style="color:#e2e8f0;margin:0 0 6px;font-size:1.1rem;">📄 Download Your Interview Report</h3>
+                <h3 style="color:#e2e8f0;margin:0 0 6px;font-size:1.1rem;">⬇️ Download Your Interview Report</h3>
                 <p style="color:#94a3b8;margin:0;font-size:0.88rem;">
                     Generate a professionally formatted PDF containing your questions, answers, AI feedback, keyword analysis, and coaching recommendations.
                 </p>
@@ -324,10 +332,8 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                 clear_btn           = gr.Button("🗑️ Clear Session", variant="secondary")
 
             report_file_output = gr.File(label="Your PDF Report — click to download", interactive=False)
-
-            gr.HTML('<hr style="border:none;border-top:1px solid rgba(99,102,241,0.15);margin:20px 0;"/>')
-            gr.Markdown("### 📝 Session Summary")
-            history_display = gr.Markdown(render_history(load_history()))
+            
+            history_display = gr.Markdown("### 📝 Session Summary\n\n" + render_history(load_history()))
 
         # ══════════════════════════════════════════════════════════════════════
         # TAB 3: PREP SHEET
@@ -444,11 +450,4 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
     )
 
 # ── Launch ────────────────────────────────────────────────────────────────────
-custom_theme = gr.themes.Soft(
-    primary_hue=gr.themes.colors.violet,
-    secondary_hue=gr.themes.colors.purple,
-    neutral_hue=gr.themes.colors.slate,
-    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "sans-serif"],
-)
-
-demo.launch(theme=custom_theme, css=CUSTOM_CSS)
+demo.launch()
