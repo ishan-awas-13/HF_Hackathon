@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "timestamp": "2026-06-12 00:35",
+    "job_snippet": "Job Title: Lead Head Chef & Kitchen Operations Manager\nLocation: Bella Italia Bi...",
+    "industry": "Food Service, Hospitality",
+    "role_level": "Director",
+    "mode": "\u26a1 Quick (3 Questions)",
+    "questions": [
+      "Can you please describe a project from your culinary management career where you demonstrated expertise in all aspects of food service operations, including culinary management, kitchen operations, seasonal menu design, food cost metrics, and food safety compliance?",
+      "Describe a time when you faced a significant challenge in maintaining food cost metrics during peak season while still delivering high-quality dishes to customers. How did you address this issue, and what actions did you take to ensure continued success moving forward?",
+      "If we were to launch a new autumn menu, what innovative dish would you propose and how would you ensure it is cost-effective while maintaining our food safety standards?"
+    ],
+    "answers": [
+      "i can cook like gordon ramsay. im the best",
+      "i can cook like gordon ramsay. im the best",
+      "i can cook like gordon ramsay. im the best"
+    ],
+    "scores": [
+      "NIL/10",
+      "NIL/10",
+      "NIL/10"
+    ],
+    "numeric_scores": [],
+    "score_results": [
+      {
+        "raw_feedback": " Relevant: NO\nScore: NIL/10\nWarning: \u26a0\ufe0f Irrelevant response detected. Please answer the interview question properly.",
+        "score_str": "NIL/10",
+        "numeric_score": null,
+        "hit_keywords": [],
+        "missed_keywords": [
+          "Culinary Management",
+          "Kitchen Operations",
+          "Seasonal Menu Design",
+          "Food Cost Metrics",
+          "Food Safety Compliance"
+        ],
+        "coverage_pct": 0.0,
+        "star_hint": true
+      },
+      {
+        "raw_feedback": " Relevant: NO\nScore: NIL/10\nWarning: \u26a0\ufe0f Irrelevant response detected. Please answer the interview question properly.",
+        "score_str": "NIL/10",
+        "numeric_score": null,
+        "hit_keywords": [],
+        "missed_keywords": [
+          "Culinary Management",
+          "Kitchen Operations",
+          "Seasonal Menu Design",
+          "Food Cost Metrics",
+          "Food Safety Compliance"
+        ],
+        "coverage_pct": 0.0,
+        "star_hint": true
+      },
+      {
+        "raw_feedback": " Relevant: NO\nScore: NIL/10\nWarning: \u26a0\ufe0f Irrelevant response detected. Please answer the interview question properly. The question was about proposing an innovative dish for a new autumn menu, considering cost-effectiveness and food safety standards. The candidate's response did not address any of these aspects.",
+        "score_str": "NIL/10",
+        "numeric_score": null,
+        "hit_keywords": [],
+        "missed_keywords": [
+          "Culinary Management",
+          "Kitchen Operations",
+          "Seasonal Menu Design",
+          "Food Cost Metrics",
+          "Food Safety Compliance"
+        ],
+        "coverage_pct": 0.0,
+        "star_hint": true
+      }
+    ]
+  }
+]

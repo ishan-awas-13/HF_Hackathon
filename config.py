@@ -13,7 +13,7 @@ HISTORY_FILE = "interview_history.json"
 INTERVIEW_MODES = {
     "⚡ Quick (3 Questions)": 3,
     "📋 Standard (5 Questions)": 5,
-    "🔬 Deep Dive (7 Questions)": 7,
+    "🔬 Deep Dive (7 Questions)    ": 7,
 }
 
 # ── Question Prompt Templates ─────────────────────────────────────────────────
@@ -116,6 +116,27 @@ CUSTOM_CSS = """
 body { background: #080818 !important; }
 gradio-app { background: transparent !important; }
 .gradio-container { background: transparent !important; width: 100% !important; max-width: none !important; margin: 0 auto !important; padding: 0 20px !important; }
+
+/* ── Make the blob background wrapper invisible (blobs are position:fixed, they float fine) ── */
+#bg-blobs {
+    background: none !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    pointer-events: none !important;
+}
+/* ── Make the header wrapper borderless/transparent ── */
+#app-header {
+    background: none !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
 
 /* ── Glass panels ── */
 .gr-panel, .gr-box, .svelte-panel, .block, .form {
@@ -339,5 +360,22 @@ label span, .gr-textbox label { color: #cbd5e1 !important; font-weight: 500 !imp
 .gr-file svg {
     stroke: #8b5cf6 !important;
 }
+
+/* ── Gradio footer (settings cog, "Built with Gradio" link) ── */
+footer, .gradio-container > footer, .built-with {
+    color: var(--text-dim) !important;
+}
+footer a, .built-with a {
+    color: var(--text-muted) !important;
+}
+footer svg, .built-with svg {
+    fill: var(--text-dim) !important;
+    stroke: var(--text-dim) !important;
+}
+
+/*-----------Styling for step-1-group gr.Group() object.-----------*/
+
+/* Style the outer group container to look like a single clean panel */
+
 
 """

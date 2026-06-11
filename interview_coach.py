@@ -59,7 +59,6 @@ _BLOBS_HTML = """
 _HEADER_HTML = """
 <div style="text-align:center; padding: 2rem 0 1rem; position:relative; z-index:1;">
     <div style="display:inline-flex; align-items:center; gap:12px; margin-bottom:0.5rem;">
-        <span style="font-size:2.4rem;">🎙️</span>
         <h1 style="margin:0; font-size:2.5rem; font-weight:800; letter-spacing:-0.5px;
                    background:linear-gradient(135deg,#6366f1 0%,#a78bfa 50%,#ec4899 100%);
                    -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1;">
@@ -187,8 +186,8 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
     n_questions_state  = gr.State(3)   # Resolved question count for progress bar
 
     # ── Background + Header ───────────────────────────────────────────────────
-    gr.HTML(_BLOBS_HTML)
-    gr.HTML(_HEADER_HTML)
+    gr.HTML(_BLOBS_HTML, elem_id="bg-blobs")
+    gr.HTML(_HEADER_HTML, elem_id="app-header")
 
     with gr.Tabs():
 
@@ -200,9 +199,11 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
             with gr.Row(equal_height=False):
 
                 # ── LEFT COLUMN: Job Input + Mode ─────────────────────────────
-                with gr.Column(scale=1, min_width=340):
-                    gr.HTML('<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Step 1</p>')
-                    gr.Markdown("### 📋 Paste the Job Description")
+                with gr.Column(scale=1, min_width=360):
+                    gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+                    Step 1: <br>
+                    <b>📋 Paste the Job Description</b> </p>''')
+    
 
                     job_desc_box = gr.Textbox(
                         label="Job Description",
@@ -210,8 +211,9 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                         placeholder="Paste from LinkedIn, a company's careers page, etc.\n\nTip: A longer, more detailed JD = better tailored questions.",
                     )
 
-                    gr.HTML('<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:12px 0 6px;">Step 2</p>')
-                    gr.Markdown("### 🎚️ Choose Interview Depth")
+                    gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0px 0 6px;">
+                    Step 2 <br>
+                    <b>🎚️ Choose Interview Depth</b> </p>''')
 
                     mode_selector = gr.Radio(
                         choices=list(INTERVIEW_MODES.keys()),
@@ -219,15 +221,17 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                         label="Interview Mode",
                         info="How many questions do you want to answer?",
                     )
-
+                
                     start_btn = gr.Button(
                         "🚀 Start Interview", variant="primary", size="lg",
                     )
 
                     gr.HTML("""
-                    <div style="margin-top:16px;padding:12px 16px;background:rgba(99,102,241,0.07);
-                                border:1px solid rgba(99,102,241,0.2);border-radius:10px;">
+                    <div style="padding:12px 12px;background:rgba(99,102,241,0.07);
+                                border:5px solid rgba(99,102,241,0.2);border-radius:10px;">
+
                         <p style="margin:0;font-size:0.82rem;color:#94a3b8;line-height:1.6;">
+
                             <strong style="color:#a5b4fc;">💡 Tips for a better session:</strong><br>
                             • Paste the <em>full</em> job posting (350+ characters)<br>
                             • Answer in complete sentences<br>
@@ -238,8 +242,9 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
 
                 # ── RIGHT COLUMN: Q&A ─────────────────────────────────────────
                 with gr.Column(scale=1, min_width=400):
-                    gr.HTML('<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Step 3</p>')
-                    gr.Markdown("### 💬 Answer Questions")
+                    gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+                    Step 3: <br>
+                    <b>💬 Answer the Questions</b> </p>''')
 
                     progress_bar_display = gr.HTML('<div style="display:none"></div>')
 
@@ -267,8 +272,10 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
             keyword_badges_display = gr.HTML('<div style="display:none"></div>')
 
             # ── Feedback ──────────────────────────────────────────────────────
-            gr.HTML('<div style="margin-top:8px;"><p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Step 4</p></div>')
-            gr.Markdown("### 🏆 AI Coach Feedback")
+
+            gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+            Step 4: <br>
+            <b>📋 Get feedback</b> </p>''')
             feedback_box = gr.Textbox(
                 label="AI Coach Feedback",
                 interactive=False,
