@@ -290,6 +290,11 @@ textarea.generating, textarea.pending {
 .gr-markdown, .prose {
     color: #cbd5e1 !important;
 }
+
+
+.padded-markdown{
+    padding: 16px 20px !important;
+}
 .gr-markdown h1, .gr-markdown h2, .gr-markdown h3 {
     color: #e2e8f0 !important;
 }
@@ -536,5 +541,26 @@ footer svg, .built-with svg {
     color: white !important;
 }
 
+/* ── Tab 2 (History & Report) Button Styling ── */
+/* Primary Button (Generate PDF Report) */
+#report-actions button.primary {
+    background: #8b5cf6 !important;
+    color: white !important;
+    border: 1px solid #a5b4fc !important;
+}
+#report-actions button.primary:hover {
+    background: #7c3aed !important;
+}
+
+/* Secondary Buttons (Refresh Preview & Clear Session) */
+#report-actions button.secondary {
+    background: #322b48 !important;
+    color: #ffffff !important;
+    border: 1px solid #6366f1 !important;
+}
+#report-actions button.secondary:hover {
+    background: #191836 !important;
+    border-color: rgba(99, 102, 241, 0.8) !important;
+}
 
 """

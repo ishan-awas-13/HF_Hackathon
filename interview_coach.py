@@ -341,7 +341,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
         # ══════════════════════════════════════════════════════════════════════
         # TAB 2: HISTORY & PDF
         # ══════════════════════════════════════════════════════════════════════
-        with gr.Tab("📈 History & Report"):
+        with gr.Tab("📈 History & Report") as history_tab:
             gr.HTML("""
             <div style="padding:8px 0 16px;">
                 <h3 style="color:#e2e8f0;margin:0 0 6px;font-size:1.1rem;">⬇️ Download Your Interview Report</h3>
@@ -351,14 +351,13 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
             </div>
             """)
 
-            with gr.Row():
-                download_report_btn = gr.Button("📥 Generate PDF Report", variant="primary", size="lg")
+            with gr.Row(elem_id="report-actions"):
+                download_report_btn = gr.DownloadButton("📥 Download Report", variant="primary", size="lg")
                 refresh_btn         = gr.Button("🔄 Refresh Preview", variant="secondary")
                 clear_btn           = gr.Button("🗑️ Clear Session", variant="secondary")
 
-            report_file_output = gr.File(label="Your PDF Report — click to download", interactive=False)
             
-            history_display = gr.Markdown("### 📝 Session Summary\n\n" + render_history(load_history()))
+            history_display = gr.Markdown("### 📝 Session Summary\n\n" + render_history(load_history()), elem_classes=["padded-markdown"])
 
         # ══════════════════════════════════════════════════════════════════════
         # TAB 3: PREP SHEET
@@ -374,14 +373,14 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
             </div>
             """)
             tips_display = gr.Markdown(
-                "*Start an interview on the Practice tab to generate your personalised prep sheet.*"
+                "*Start an interview on the Practice tab to generate your personalised prep sheet.*", elem_classes=["padded-markdown"]
             )
 
         # ══════════════════════════════════════════════════════════════════════
         # TAB 4: ABOUT
         # ══════════════════════════════════════════════════════════════════════
         with gr.Tab("ℹ️ About"):
-            gr.Markdown(_ABOUT_MD)
+            gr.Markdown(_ABOUT_MD, elem_classes=["padded-markdown"])
 
     # ── Event wiring ──────────────────────────────────────────────────────────
 
@@ -451,16 +450,20 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
         ],
     )
 
-    download_report_btn.click(
+    history_tab.select(
         fn=generate_pdf_report,
         inputs=[history_state],
-        outputs=[report_file_output],
+        outputs=[download_report_btn],
     )
 
     refresh_btn.click(
         fn=render_history,
         inputs=[history_state],
         outputs=[history_display],
+    ).then(
+        fn=generate_pdf_report,
+        inputs=[history_state],
+        outputs=[download_report_btn],
     )
 
     def clear_history_fn(history_state):
