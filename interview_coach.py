@@ -233,17 +233,19 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                     )
 
                     gr.HTML("""
-                    <div style="padding:12px 12px;background:rgba(99,102,241,0.07);
-                                border:5px solid rgba(99,102,241,0.2);border-radius:10px;">
-
-                        <p style="margin:0;font-size:0.82rem;color:#94a3b8;line-height:1.6;">
-
-                            <strong style="color:#a5b4fc;">💡 Tips for a better session:</strong><br>
+                        <div class = "session-tips"> 
+                            <p style = "margin: 0;
+                                        font-size: 0.82rem;
+                                        color: #94a3b8;
+                                        line-height:1.6;">
+                                <strong style = "color: #a5b4fc;">
+                                    💡 Tips for a better session:</strong><br>
                             • Paste the <em>full</em> job posting (350+ characters)<br>
                             • Answer in complete sentences<br>
                             • Use STAR format for behavioral questions
-                        </p>
-                    </div>
+                                </strong>        
+                            </p>
+                        </div>                    
                     """)
 
                 # ── RIGHT COLUMN: Q&A ─────────────────────────────────────────
@@ -253,10 +255,29 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                         Step 3: <br>
                         <b>💬 Answer the Questions</b> </p>''')
     
-                        progress_bar_display = gr.HTML('<div>Session Progress: </div>')
+                        progress_bar_display = gr.HTML('<div>Session Progress--> </div>')
+
+                        """gr.HTML('''<div  
+                            style="color:white; 
+                                    font-size:0.78rem; 
+                                    font-weight:600; 
+                                    letter-spacing:0.08em; 
+                                    text-transform:uppercase; 
+                                    margin:0 0 6px;
+                                    
+                                    border: 2px solid white;
+                                    border-radius: 10px;
+                                    padding: 10px;
+                                    background-color: #322b48;
+                                    text-align: center;">
+                            Interview Question 
+                        </div>''')
+                        
+                        """
     
                         question_box = gr.Textbox(
                             label="Interview Question",
+                            show_label=True,
                             lines=3,
                             interactive=False,
                             placeholder="Your question will appear here after you click Start Interview...",
@@ -264,6 +285,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
     
                         answer_box = gr.Textbox(
                             label="Your Answer",
+                            show_label=True,
                             lines=5,
                             placeholder=(
                                 "Answer in complete sentences.\n\n"
@@ -276,7 +298,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                             next_btn     = gr.Button("➡️ Next Question", variant="secondary", size="lg")
 
             # ── Keyword Coverage Badge Area ───────────────────────────────────
-            keyword_badges_display = gr.HTML('<div class="badge-container">Keyword Coverage Badges</div>')
+            keyword_badges_display = gr.HTML('<div class="badge-container">Keyword Coverage Badges--></div>')
 
             # ── Feedback ──────────────────────────────────────────────────────
 

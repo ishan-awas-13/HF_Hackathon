@@ -459,6 +459,21 @@ footer svg, .built-with svg {
     backdrop-filter: none !important;    
 }
 
+/*TIPS SECTION FORMATTING*/
+/*Since we use class tag, we will call this via (.)*/
+.session-tips {
+    background: rgba(15,15,40,0.6);
+    border: 2px solid rgba(99,102,241,0.2);
+    border-radius:12px;
+    padding:14px 14px;
+    box-shadow: 0 0 10px deepskyblue !important;
+}
+
+.session-tips:hover{
+    border-color: blue !important;
+    box-shadow: 0 0 20px blue !important;
+}
+
 /*Step-3 button formartting*/
 /*we edit the row settings as the button render inside a row within the right column*/
 #step-3-group .row {
@@ -489,5 +504,7 @@ footer svg, .built-with svg {
     border: 1px solid rgba(99, 102, 241, 0.8) !important; /* Edit selected border width/color here */
 }
 /*------------------------------------------------------*/
+
+
 
 """
