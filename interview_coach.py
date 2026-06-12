@@ -214,15 +214,18 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
 
                     with gr.Group(elem_id="step-2-group"):
                         gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0px 0 6px;">
-                        Step 2 <br>
-                        <b>🎚️ Choose Interview Depth</b> </p>''')
+                        Step 2<br>
+                        <b>🎚️ Choose Interview Depth</b><br>
+                        <p style="color:#94a3b8;font-size:0.80rem;font-weight:400;letter-spacing:0.08em;margin:0px 0 0px;">
+                            How many questions do you want to answer?
+                        </p>
+                        </p>''')
     
                         mode_selector = gr.Radio(
                             choices=list(INTERVIEW_MODES.keys()),
                             value="⚡ Quick (3 Questions)",
                             label="Interview Mode",
                             show_label=False,
-                            info="How many questions do you want to answer?",
                         )
                 
                     start_btn = gr.Button(
@@ -244,13 +247,13 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                     """)
 
                 # ── RIGHT COLUMN: Q&A ─────────────────────────────────────────
-                with gr.Column(scale=1, min_width=400):
+                with gr.Column(scale=1, min_width=360):
                     with gr.Group(elem_id="step-3-group"):
                         gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
                         Step 3: <br>
                         <b>💬 Answer the Questions</b> </p>''')
     
-                        progress_bar_display = gr.HTML('<div style="display:none"></div>')
+                        progress_bar_display = gr.HTML('<div>Session Progress: </div>')
     
                         question_box = gr.Textbox(
                             label="Interview Question",
@@ -269,8 +272,8 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                         )
     
                         with gr.Row():
-                            feedback_btn = gr.Button("📊 Get Feedback", variant="primary")
-                            next_btn     = gr.Button("➡️ Next Question", variant="secondary")
+                            feedback_btn = gr.Button("📊 Get Feedback", variant="primary", size="lg")
+                            next_btn     = gr.Button("➡️ Next Question", variant="secondary", size="lg")
 
             # ── Keyword Coverage Badge Area ───────────────────────────────────
             keyword_badges_display = gr.HTML('<div class="badge-container">Keyword Coverage Badges</div>')

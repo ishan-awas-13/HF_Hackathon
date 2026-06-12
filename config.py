@@ -426,10 +426,68 @@ footer svg, .built-with svg {
     outline: none !important;
     box-shadow: none !important;
 }
-
-/* Style adjustments for inner radio options in Step 2 */
-#step-2-group .gr-input-label {
-    border-color: rgba(99, 102, 241, 0.15) !important;
+/*------------------------------------------------------*/
+/* Step-2 Normal (unselected) radio button choices */
+#step-2-group label {
+    border: 2px solid rgba(99, 102, 241, 0.2) !important; /* Edit normal border width/color here */
+    border-radius: 30px !important;
+    background: #475569 !important;
+    width: 97%;
 }
+
+/*Step-2 label Hover settings*/
+#step-2-group label:hover {
+    border: 2px solid rgba(99, 102, 241, 0.8) !important; /* Edit selected border width/color here */
+    background: rgba(99, 102, 241, 0.1) !important;       /* Edit selected background here */
+    width: 100%;
+    border-radius: 30px !important;
+}
+
+/* Step-2 Selected/active radio button choice */
+#step-2-group label.selected {
+    border: 2px solid rgba(99, 102, 241, 0.8) !important; /* Edit selected border width/color here */
+    background: #9333EA !important;       /* Edit selected background here */
+    width: 100%;
+    border-radius: 30px !important;
+}
+
+/*Step-2 Radio button container's border editing.*/
+#step-2-group fieldset{
+    border: none !important;
+    background: tranparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;    
+}
+
+/*Step-3 button formartting*/
+/*we edit the row settings as the button render inside a row within the right column*/
+#step-3-group .row {
+    display: flex !important;
+    flex-direction: row !important;     /* Force horizontal layout */
+    flex-wrap: nowrap !important;       /* Prevent wrapping/stacking */
+    justify-content: center !important; /* Center both buttons */
+    margin: 0px auto !important;
+    padding: 0px !important;
+    gap: 10px !important;
+    width: 95% !important;
+}
+
+
+/*Now we get into the button formatting directly*/
+#step-3-group button{
+    border-radius: 30px !important;
+    border: 1px solid rgba(99, 102, 241, 0.2) !important;  
+    padding: 5px !important;
+    width: 49.5% !important;
+    flex: none !important;
+}
+
+/* Hover (mouse-over) effect: make the button slightly larger/taller */
+#step-3-group button:hover {
+    padding: 5px !important;
+    background: #191836 !important; /* Slightly stronger purple */
+    border: 1px solid rgba(99, 102, 241, 0.8) !important; /* Edit selected border width/color here */
+}
+/*------------------------------------------------------*/
 
 """
