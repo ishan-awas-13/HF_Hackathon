@@ -255,7 +255,19 @@ textarea.generating, textarea.pending {
 }
 
 /* ── Labels ── */
-label span, .gr-textbox label { color: #cbd5e1 !important; font-weight: 500 !important; font-size: 0.85rem !important; }
+/* Custom styling for the textbox label capsules */
+#step-1-group label span,
+#step-3-group label span,
+#step-4-group label span {
+    background: #322b48 !important;     /* Change this to edit the capsule background color */
+    color: #e2e8f0 !important;          /* Change this to edit the text color inside the label */
+    border: 1px solid #6366f1 !important; /* Optional: adds a border to match the input boxes */
+    width: 150px !important;
+    text-align: center !important;
+    display: inline-block !important;
+    
+}
+
 
 /* ── Progress box ── */
 #progress_box textarea {
@@ -414,17 +426,17 @@ footer svg, .built-with svg {
 #step-3-group textarea,
 #step-4-group textarea {
     background: rgba(8, 8, 28, 0.7) !important;
-    border: 2px solid rgba(99, 102, 241, 0.35) !important;
-    border-radius: 8px !important;
+    border: 3px solid steelblue !important;
+    border-radius: 5px !important;
     padding: 10px !important;
-    box-shadow: none !important;
+    box-shadow: 0 0 3px dodgerblue !important;
 }
 
 #step-1-group textarea:focus,
 #step-3-group textarea:focus,
 #step-4-group textarea:focus {
     outline: none !important;
-    box-shadow: none !important;
+    box-shadow: 0 0 5px dodgerblue !important;
 }
 /*------------------------------------------------------*/
 /* Step-2 Normal (unselected) radio button choices */
@@ -432,14 +444,14 @@ footer svg, .built-with svg {
     border: 2px solid rgba(99, 102, 241, 0.2) !important; /* Edit normal border width/color here */
     border-radius: 30px !important;
     background: #475569 !important;
-    width: 97%;
+    width: 60%;
 }
 
 /*Step-2 label Hover settings*/
 #step-2-group label:hover {
     border: 2px solid rgba(99, 102, 241, 0.8) !important; /* Edit selected border width/color here */
     background: rgba(99, 102, 241, 0.1) !important;       /* Edit selected background here */
-    width: 100%;
+    width: 60%;
     border-radius: 30px !important;
 }
 
@@ -447,7 +459,7 @@ footer svg, .built-with svg {
 #step-2-group label.selected {
     border: 2px solid rgba(99, 102, 241, 0.8) !important; /* Edit selected border width/color here */
     background: #9333EA !important;       /* Edit selected background here */
-    width: 100%;
+    width: 60%;
     border-radius: 30px !important;
 }
 
@@ -489,6 +501,8 @@ footer svg, .built-with svg {
 
 
 /*Now we get into the button formatting directly*/
+
+/*this is for the Primary button: the Get Feedback button*/
 #step-3-group button{
     border-radius: 30px !important;
     border: 1px solid rgba(99, 102, 241, 0.2) !important;  
@@ -497,7 +511,7 @@ footer svg, .built-with svg {
     flex: none !important;
 }
 
-/* Hover (mouse-over) effect: make the button slightly larger/taller */
+/* Hover (mouse-over) effect: make the button darker with a minor border change*/
 #step-3-group button:hover {
     padding: 5px !important;
     background: #191836 !important; /* Slightly stronger purple */
@@ -505,6 +519,22 @@ footer svg, .built-with svg {
 }
 /*------------------------------------------------------*/
 
+/*this is for the secondary button of the gr.Row(), the Next Question button*/
+#step-3-group button.secondary{
+    background: #475569 !important;
+    color: white !important;
+    border-radius: 30px !important;
+    border: 1px solid rgba(99, 102, 241, 0.2) !important;  
+    opacity: 1 !important;
+}
+
+
+#step-3-group button.secondary:hover{
+    padding: 5px !important;
+    background: #191836 !important;
+    border: 1px solid rgba(99, 102, 241, 0.8) !important;
+    color: white !important;
+}
 
 
 """

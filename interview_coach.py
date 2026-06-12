@@ -171,6 +171,14 @@ Use this structure for behavioral and situational answers:
 *Built for the HuggingFace Hackathon 2026 · Model: mistralai/Mistral-7B-Instruct-v0.3 (7B params)*
 """
 
+"""
+import gradio as gr
+
+with gr.Blocks(theme=gr.Theme.from_hub("theme-repo/STONE_Theme")) as demo:
+    ...
+
+"""
+
 # ── Build UI ────────────────────────────────────────────────────────────────── 
 with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
 
@@ -201,7 +209,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                 # ── LEFT COLUMN: Job Input + Mode ─────────────────────────────
                 with gr.Column(scale=1, min_width=360):
                     with gr.Group(elem_id="step-1-group"):
-                        gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+                        gr.HTML('''<p style="color:#94a3b8;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
                         Step 1: <br>
                         <b>📋 Paste the Job Description</b> </p>''')
         
@@ -213,7 +221,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                         )
 
                     with gr.Group(elem_id="step-2-group"):
-                        gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0px 0 6px;">
+                        gr.HTML('''<p style="color:#94a3b8;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0px 0 6px;">
                         Step 2<br>
                         <b>🎚️ Choose Interview Depth</b><br>
                         <p style="color:#94a3b8;font-size:0.80rem;font-weight:400;letter-spacing:0.08em;margin:0px 0 0px;">
@@ -251,7 +259,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
                 # ── RIGHT COLUMN: Q&A ─────────────────────────────────────────
                 with gr.Column(scale=1, min_width=360):
                     with gr.Group(elem_id="step-3-group"):
-                        gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+                        gr.HTML('''<p style="color:#94a3b8;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
                         Step 3: <br>
                         <b>💬 Answer the Questions</b> </p>''')
     
@@ -303,7 +311,7 @@ with gr.Blocks(title="AI Interview Coach", fill_width=True) as demo:
             # ── Feedback ──────────────────────────────────────────────────────
 
             with gr.Group(elem_id="step-4-group"):
-                gr.HTML('''<p style="color:#94a3b8;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
+                gr.HTML('''<p style="color:#94a3b8;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">
                 Step 4: <br>
                 <b>📋 Get feedback</b> </p>''')
                 feedback_box = gr.Textbox(
@@ -473,5 +481,12 @@ custom_theme = gr.themes.Soft(
     neutral_hue=gr.themes.colors.slate,
     font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "sans-serif"],
 )
+
+
+
+
+
+
+
 
 demo.launch(theme=custom_theme, css=CUSTOM_CSS)
