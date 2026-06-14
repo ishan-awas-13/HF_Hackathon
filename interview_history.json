@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "timestamp": "2026-06-14 18:12",
+    "job_snippet": "Position: Legal Tech Implementation Specialist\nCompany: LexDigital Global\n\nWe ar...",
+    "industry": "Legal Technology",
+    "role_level": "Mid-Level",
+    "mode": "\ud83d\udccb Standard (5 Questions)",
+    "questions": [
+      "Could you please describe a project where you combined your knowledge of Law, Information Systems, Courtroom Evidence Procedures, and Document Metadata Structures to develop an automation macro solution for parsing legal text documents?",
+      "Can you describe a time when you encountered a challenge in implementing legal technology, and what steps did you take to overcome it?",
+      "Can you describe a scenario where you applied your knowledge of legal document metadata structures and automation macros to streamline the review process for intellectual property litigation documents?",
+      "Can you describe a time when you had to collaborate with both legal and technical teams on a project?",
+      "If a legal team was struggling to efficiently manage and search through a large volume of discovery documents in a patent infringement case, what would you suggest as an automation solution that takes into account courtroom evidence procedures, document metadata structures, and existing software tools?"
+    ],
+    "answers": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "scores": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "numeric_scores": [],
+    "score_results": []
+  }
+]

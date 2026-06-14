@@ -1,5 +1,5 @@
-gradio>=4.0.0
-huggingface_hub>=0.23.0
-reportlab>=4.0.0
-python-dotenv>=1.0.0
-requests>=2.31.0
+gradio
+huggingface_hub
+reportlab
+python-dotenv
+requests

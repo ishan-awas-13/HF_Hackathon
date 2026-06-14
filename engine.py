@@ -27,27 +27,39 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.colors import HexColor
 from reportlab.lib.units import inch
 
+from huggingface_hub import InferenceClient
+client = InferenceClient(model = HF_MODEL, token = os.environ.get("HF_TOKEN"))
+
 # ── Ollama LLM call ──────────────────────────────────────────────────────────
+from huggingface_hub import InferenceClient
+import os
+
+# Initialize the official client
+# It will automatically find the HF_TOKEN in your environment
+client = InferenceClient(model=HF_MODEL, token=os.environ.get("HF_TOKEN"))
+
 def ask_llm(prompt: str, temperature: float = 0.7, max_tokens: int = 512) -> str:
     """
-    Local Ollama inference call. Injected into all three agents as llm_fn.
-    Model: mistral:7b running at http://localhost:11434
+    Hugging Face Serverless Inference API call using the official InferenceClient.
+    This automatically handles 'Model is loading' wait times and retries.
     """
-    import requests
     try:
-        payload = {
-            "model": OLLAMA_MODEL,
-            "prompt": prompt,
-            "stream": False,
-            "options": {"temperature": temperature, "num_predict": max_tokens}
-        }
-        r = requests.post(OLLAMA_URL, json=payload, timeout=300)
-        r.raise_for_status()
-        return r.json().get("response", "No response from Ollama.")
+        # HF API strictly requires temperature to be > 0
+        safe_temp = temperature if temperature > 0 else 0.01
+        
+        response = client.text_generation(
+            prompt,
+            max_new_tokens=max_tokens,
+            temperature=safe_temp,
+            return_full_text=False
+        )
+        
+        # Clean up any invisible HF formatting tokens that might break our Validator
+        return response.replace("<s>", "").replace("</s>", "").strip()
+        
     except Exception as e:
-        return f"❌ Ollama Error: {str(e)}. Is Ollama running? Try: ollama serve"
-
-
+        print(f"\n[EXCEPTION] {str(e)}\n")
+        return "" # Returning an empty string safely triggers the Validator's failure message instead of crashing the app
 
 # ── Agent instances (singletons, created once at startup) ─────────────────────
 _validator   = ValidatorAgent(ask_llm)
